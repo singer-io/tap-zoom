@@ -41,7 +41,10 @@ def sync_endpoint(client, catalog, state, selected_streams, stream_name, endpoin
             'page_number': page_number
         }
 
-        data = client.get(path, params=params, endpoint=stream_name)
+        data = client.get(path,
+                          params=params,
+                          endpoint=stream_name,
+                          ignore_zoom_error_codes=endpoint.get('ignore_zoom_error_codes', []))
 
         if data is None:
             return
@@ -55,6 +58,7 @@ def sync_endpoint(client, catalog, state, selected_streams, stream_name, endpoin
             with Transformer() as transformer:
                 for record in records:
                     if persist and stream_name in selected_streams:
+                        record = {**record, **key_bag}
                         record_typed = transformer.transform(record,
                                                              schema,
                                                              mdata)

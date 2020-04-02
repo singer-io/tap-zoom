@@ -30,7 +30,7 @@ class ZoomClient(object):
                           (Server5xxError, RateLimitError, ConnectionError),
                           max_tries=5,
                           factor=3)
-    def request(self, method, path=None, url=None, **kwargs):
+    def request(self, method, path=None, url=None, ignore_zoom_error_codes=None, **kwargs):
         if url is None and path:
             url = '{}{}'.format(self.BASE_URL, path)
 
@@ -53,7 +53,7 @@ class ZoomClient(object):
 
             if response.status_code == 400:
                 data = response.json()
-                if data.get('code') == 200:
+                if data.get('code') in ignore_zoom_error_codes:
                     timer.tags[metrics.Tag.http_status_code] = 200
                     return None
 
