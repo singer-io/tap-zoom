@@ -44,7 +44,8 @@ def sync_endpoint(client, catalog, state, selected_streams, stream_name, endpoin
         data = client.get(path,
                           params=params,
                           endpoint=stream_name,
-                          ignore_zoom_error_codes=endpoint.get('ignore_zoom_error_codes', []))
+                          ignore_zoom_error_codes=endpoint.get('ignore_zoom_error_codes', []),
+                          ignore_http_error_codes=endpoint.get('ignore_http_error_codes', []))
 
         if data is None:
             return
