@@ -8,7 +8,7 @@ ENDPOINTS_CONFIG = {
             'user_id': 'id'
         },
         'children': {
-            'list_webinars': {
+            'list_webinars': { ## TODO: switch pk to uuid and provide it?
                 'persist': False,
                 'path': 'users/{user_id}/webinars',
                 'data_key': 'webinars',
@@ -77,6 +77,16 @@ ENDPOINTS_CONFIG = {
                         'path': 'webinars/{webinar_id}/tracking_sources',
                         'pk': ['webinar_id', 'id'],
                         'data_key': 'tracking_sources'
+                    },
+                    'report_webinars': {
+                        'paginate': False,
+                        'path': 'report/webinars/{webinar_id}',
+                        'pk': ['uuid']
+                    },
+                    'report_webinar_participants': { ## TODO: next_page_token ? - new type of pagination
+                        'path': 'report/webinars/{webinar_id}/participants',
+                        'pk': ['webinar_id', 'id'],
+                        'data_key': 'participants'
                     }
                 }
             }
