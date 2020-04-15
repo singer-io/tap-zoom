@@ -8,7 +8,65 @@ ENDPOINTS_CONFIG = {
             'user_id': 'id'
         },
         'children': {
-            'list_webinars': { ## TODO: switch pk to uuid and provide it?
+            'list_meetings': {
+                'persist': False,
+                'path': 'users/{user_id}/meetings',
+                'data_key': 'meetings',
+                'provides': {
+                    'meeting_id': 'id'
+                },
+                'children': {
+                    'meetings': {
+                        'paginate': False,
+                        'path': 'meetings/{meeting_id}',
+                        'pk': ['uuid'],
+                        'provides': {
+                            'meeting_uuid': 'uuid'
+                        },
+                        'children': {
+                            'meeting_poll_results': {
+                                'paginate': False,
+                                'path': 'past_meetings/{meeting_uuid}/polls',
+                                'pk': ['meeting_uuid', 'email'],
+                                'data_key': 'questions'
+                            },
+                            'meeting_files': {
+                                'paginate': False,
+                                'path': 'past_meetings/{meeting_uuid}/files',
+                                'pk': ['meeting_uuid', 'file_name'],
+                                'data_key': 'in_meeting_files'
+                            },
+                            'report_meetings': {
+                                'paginate': False,
+                                'path': 'report/meetings/{meeting_uuid}',
+                                'pk': ['uuid']
+                            },
+                            'report_meeting_participants': { ## TODO: next_page_token ? - new type of pagination
+                                'path': 'report/meetings/{meeting_uuid}/participants',
+                                'pk': ['meeting_uuid', 'id'],
+                                'data_key': 'participants'
+                            }
+                        }
+                    },
+                    'meeting_registrants': { ## TODO: More then only approved?
+                        'path': 'meetings/{meeting_id}/registrants',
+                        'pk': ['meeting_id', 'id'],
+                        'data_key': 'registrants'
+                    },
+                    'meeting_polls': {
+                        'path': 'meetings/{meeting_id}/polls',
+                        'pk': ['meeting_id', 'id'],
+                        'data_key': 'polls'
+                    },
+                    'meeting_questions': {
+                        'paginate': False,
+                        'path': 'meetings/{meeting_id}/registrants/questions',
+                        'pk': ['meeting_id'],
+                        'ignore_zoom_error_codes': [3000]
+                    }
+                }
+            },
+            'list_webinars': {
                 'persist': False,
                 'path': 'users/{user_id}/webinars',
                 'data_key': 'webinars',
@@ -48,6 +106,16 @@ ENDPOINTS_CONFIG = {
                                 'path': 'past_webinars/{webinar_uuid}/files',
                                 'pk': ['webinar_uuid', 'file_name'],
                                 'data_key': 'in_meeting_files'
+                            },
+                            'report_webinars': {
+                                'paginate': False,
+                                'path': 'report/webinars/{webinar_uuid}',
+                                'pk': ['uuid']
+                            },
+                            'report_webinar_participants': { ## TODO: next_page_token ? - new type of pagination
+                                'path': 'report/webinars/{webinar_uuid}/participants',
+                                'pk': ['webinar_uuid', 'id'],
+                                'data_key': 'participants'
                             }
                         }
                     },
@@ -56,7 +124,7 @@ ENDPOINTS_CONFIG = {
                         'pk': ['webinar_id', 'id'],
                         'data_key': 'panelists'
                     },
-                    'webinar_registrants': {
+                    'webinar_registrants': { ## TODO: More then only approved?
                         'path': 'webinars/{webinar_id}/registrants',
                         'pk': ['webinar_id', 'id'],
                         'data_key': 'registrants'
@@ -69,24 +137,13 @@ ENDPOINTS_CONFIG = {
                     'webinar_questions': {
                         'paginate': False,
                         'path': 'webinars/{webinar_id}/registrants/questions',
-                        'pk': ['webinar_id', 'id'],
-                        'data_key': 'questions',
+                        'pk': ['webinar_id'],
                         'ignore_zoom_error_codes': [3000]
                     },
                     'webinar_tracking_sources': {
                         'path': 'webinars/{webinar_id}/tracking_sources',
                         'pk': ['webinar_id', 'id'],
                         'data_key': 'tracking_sources'
-                    },
-                    'report_webinars': {
-                        'paginate': False,
-                        'path': 'report/webinars/{webinar_id}',
-                        'pk': ['uuid']
-                    },
-                    'report_webinar_participants': { ## TODO: next_page_token ? - new type of pagination
-                        'path': 'report/webinars/{webinar_id}/participants',
-                        'pk': ['webinar_id', 'id'],
-                        'data_key': 'participants'
                     }
                 }
             }

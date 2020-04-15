@@ -26,6 +26,7 @@ class ZoomClient(object):
     def __exit__(self, type, value, traceback):
         self.__session.close()
 
+    ## TODO: ratelimit lib?
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, RateLimitError, ConnectionError),
                           max_tries=5,
@@ -57,7 +58,7 @@ class ZoomClient(object):
         with metrics.http_request_timer(endpoint) as timer:
             response = self.__session.request(method, url, **kwargs)
 
-            if response.status_code >= 400 and response.status_code < 500:
+            if response.status_code in [400, 404] and response.status_code < 500:
                 if response.status_code in ignore_http_error_codes or \
                     (response.status_code == 400 and response.json().get('code') in ignore_zoom_error_codes):
                     timer.tags[metrics.Tag.http_status_code] = 200

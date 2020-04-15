@@ -2,23 +2,29 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "webinar_uuid": {
+    "id": {
       "type": [
         "string"
       ]
     },
-    "email": {
+    "meeting_id": {
       "type": [
         "string"
       ]
     },
-    "name": {
+    "status": {
       "type": [
         "null",
         "string"
       ]
     },
-    "question_details": {
+    "title": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "questions": {
       "type": [
         "null",
         "array"
@@ -29,17 +35,28 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "question": {
+          "name": {
             "type": [
               "null",
               "string"
             ]
           },
-          "answer": {
+          "type": {
             "type": [
               "null",
               "string"
             ]
+          },
+          "answers": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "type": [
+                "string"
+              ]
+            }
           }
         }
       }

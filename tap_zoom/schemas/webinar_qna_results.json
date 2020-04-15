@@ -2,7 +2,7 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "webinar_id": {
+    "webinar_uuid": {
       "type": [
         "string"
       ]

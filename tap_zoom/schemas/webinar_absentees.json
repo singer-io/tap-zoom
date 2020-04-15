@@ -7,7 +7,7 @@
         "string"
       ]
     },
-    "webinar_id": {
+    "webinar_uuid": {
       "type": [
         "string"
       ]

@@ -2,78 +2,113 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "webinar_uuid": {
-      "type": [
-        "string"
-      ]
-    },
-    "uuid": {
-      "type": [
-        "string"
-      ]
-    },
     "id": {
       "type": [
-        "integer"
+        "string"
       ]
     },
-    "type": {
+    "meeting_id": {
       "type": [
-        "null",
-        "integer"
+        "string"
       ]
     },
-    "topic": {
+    "email": {
       "type": [
         "null",
         "string"
       ]
     },
-    "user_name": {
+    "first_name": {
       "type": [
         "null",
         "string"
       ]
     },
-    "user_email": {
+    "last_name": {
       "type": [
         "null",
         "string"
       ]
     },
-    "start_time": {
+    "address": {
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     },
-    "end_time": {
+    "city": {
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
-    },
-    "duration": {
-      "type": [
-        "null",
-        "integer"
       ]
     },
-    "total_minutes": {
+    "county": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
-    "participants_count": {
+    "zip": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     },
-    "tracking_fields": {
+    "state": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "phone": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "industry": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "org": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "job_title": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "purchasing_time_frame": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "role_in_purchase_process": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "no_of_employees": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "comments": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "custom_questions": {
       "type": [
         "null",
         "array"
@@ -84,7 +119,7 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "field": {
+          "title": {
             "type": [
               "null",
               "string"
@@ -99,10 +134,23 @@
         }
       }
     },
-    "dept": {
+    "status": {
       "type": [
         "null",
-        "integer"
+        "string"
+      ]
+    },
+    "create_time": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "join_url": {
+      "type": [
+        "null",
+        "string"
       ]
     }
   }
