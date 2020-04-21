@@ -2,7 +2,7 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "meeting_uuid": {
+    "meeting_id": {
       "type": [
         "string"
       ]

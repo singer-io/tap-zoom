@@ -12,7 +12,7 @@
         "string"
       ]
     },
-    "meeting_uuid": {
+    "meeting_id": {
       "type": [
         "string"
       ]

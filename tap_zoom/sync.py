@@ -22,7 +22,14 @@ def write_schema(stream):
     schema = stream.schema.to_dict()
     singer.write_schema(stream.tap_stream_id, schema, stream.key_properties)
 
-def sync_endpoint(client, catalog, state, selected_streams, stream_name, endpoint, key_bag):
+def sync_endpoint(client,
+                  catalog,
+                  state,
+                  required_streams,
+                  selected_streams,
+                  stream_name,
+                  endpoint,
+                  key_bag):
     persist = endpoint.get('persist', True)
 
     if persist:
@@ -71,13 +78,15 @@ def sync_endpoint(client, catalog, state, selected_streams, stream_name, endpoin
                             for dest_key, obj_key in endpoint['provides'].items():
                                 child_key_bag[dest_key] = record[obj_key]
                         for child_stream_name, child_endpoint in endpoint['children'].items():
-                            sync_endpoint(client,
-                                          catalog,
-                                          state,
-                                          selected_streams,
-                                          child_stream_name,
-                                          child_endpoint,
-                                          child_key_bag)
+                            if child_stream_name in required_streams:
+                                sync_endpoint(client,
+                                              catalog,
+                                              state,
+                                              required_streams,
+                                              selected_streams,
+                                              child_stream_name,
+                                              child_endpoint,
+                                              child_key_bag)
 
         if endpoint.get('paginate', True) and page_number < data.get('page_count', 1):
             # each endpoint has a different max page size, the server will send the one that is forced
@@ -90,6 +99,19 @@ def update_current_stream(state, stream_name=None):
     set_currently_syncing(state, stream_name) 
     singer.write_state(state)
 
+def get_required_streams(endpoints, selected_stream_names):
+    required_streams = []
+    for name, endpoint in endpoints.items():
+        child_required_streams = None
+        if 'children' in endpoint:
+            child_required_streams = get_required_streams(endpoint['children'],
+                                                          selected_stream_names)
+        if name in selected_stream_names or child_required_streams:
+            required_streams.append(name)
+            if child_required_streams:
+                required_streams += child_required_streams
+    return required_streams
+
 def sync(client, catalog, state):
     if not catalog:
         catalog = discover()
@@ -101,16 +123,18 @@ def sync(client, catalog, state):
     for selected_stream in selected_streams:
         selected_stream_names.append(selected_stream.tap_stream_id)
 
-    ## TODO: handle persist dependency
+    required_streams = get_required_streams(ENDPOINTS_CONFIG, selected_stream_names)
 
     for stream_name, endpoint in ENDPOINTS_CONFIG.items():
-        update_current_stream(state, stream_name)
-        sync_endpoint(client,
-                      catalog,
-                      state,
-                      selected_stream_names,
-                      stream_name,
-                      endpoint,
-                      {})
+        if stream_name in required_streams:
+            update_current_stream(state, stream_name)
+            sync_endpoint(client,
+                          catalog,
+                          state,
+                          required_streams,
+                          selected_stream_names,
+                          stream_name,
+                          endpoint,
+                          {})
 
     update_current_stream(state)
