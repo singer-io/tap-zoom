@@ -1,6 +1,8 @@
 # tap-zoom
 
-This is a Singer tap that produces JSON-formatted data following the Singer spec.
+This is a [Singer](https://www.singer.io/) tap that produces JSON-formatted data following the Singer spec.
+
+See the getting [started guide for running taps.](https://github.com/singer-io/getting-started/blob/master/docs/RUNNING_AND_DEVELOPING.md#running-singer-with-python)
 
 This tap:
 
