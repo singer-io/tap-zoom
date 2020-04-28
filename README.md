@@ -73,4 +73,4 @@ The following OAuth scopes are required:
 
 ---
 
-Copyright &copy; 2020 Karbon, Inc
+Copyright &copy; 2020 Stitch
