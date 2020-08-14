@@ -97,7 +97,7 @@
         "string"
       ]
     },
-    "encrypted_Password": {
+    "encrypted_password": {
       "type": [
         "null",
         "string"
