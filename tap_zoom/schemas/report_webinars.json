@@ -17,6 +17,12 @@
         "integer"
       ]
     },
+    "host_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "type": {
       "type": [
         "null",
@@ -36,6 +42,12 @@
       ]
     },
     "user_email": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "user_id": {
       "type": [
         "null",
         "string"
@@ -102,7 +114,7 @@
     "dept": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     }
   }
