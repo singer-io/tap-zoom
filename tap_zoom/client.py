@@ -13,6 +13,9 @@ LOGGER = singer.get_logger()
 class Server5xxError(Exception):
     pass
 
+class Server429Error(Exception):
+    pass
+
 class ZoomClient(object):
     BASE_URL = 'https://api.zoom.us/v2/'
 
@@ -62,7 +65,7 @@ class ZoomClient(object):
             json.dump(config, file, indent=2)
 
     @backoff.on_exception(backoff.expo,
-                          (Server5xxError, RateLimitException, ConnectionError),
+                          (Server5xxError, RateLimitException, Server429Error, ConnectionError),
                           max_tries=5,
                           factor=3)
     @sleep_and_retry
@@ -113,7 +116,7 @@ class ZoomClient(object):
 
         if response.status_code == 429:
             LOGGER.warn('Rate limit hit - 429')
-            raise RateLimitException()
+            raise Server429Error(response.text)
 
         response.raise_for_status()        
 
