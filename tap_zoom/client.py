@@ -16,6 +16,10 @@ class Server5xxError(Exception):
 class Server429Error(Exception):
     pass
 
+def log_backoff_attempt(deails):
+    LOGGER.info("Error detected communicating with Zoom, triggering backoff: %d try",
+                details.get("tries"))
+
 class ZoomClient(object):
     BASE_URL = 'https://api.zoom.us/v2/'
 
@@ -66,9 +70,9 @@ class ZoomClient(object):
 
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, RateLimitException, Server429Error, ConnectionError),
-                          max_tries=5,
+                          max_tries=8,
+                          on_backoff=log_backoff_attempt,
                           factor=3)
-    @sleep_and_retry
     @limits(calls=300, period=60)
     def request(self,
                 method,
