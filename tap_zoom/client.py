@@ -16,7 +16,7 @@ class Server5xxError(Exception):
 class Server429Error(Exception):
     pass
 
-def log_backoff_attempt(deails):
+def log_backoff_attempt(details):
     LOGGER.info("Error detected communicating with Zoom, triggering backoff: %d try",
                 details.get("tries"))
 
@@ -122,7 +122,7 @@ class ZoomClient(object):
             LOGGER.warn('Rate limit hit - 429')
             raise Server429Error(response.text)
 
-        response.raise_for_status()        
+        response.raise_for_status()
 
         return response.json()
 
