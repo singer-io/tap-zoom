@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='tap-zoom',
-      version='0.0.2',
+      version='0.0.3',
       description='Singer.io tap for extracting data from the Zoom API',
       classifiers=['Programming Language :: Python :: 3 :: Only'],
       py_modules=['tap_zoom'],
