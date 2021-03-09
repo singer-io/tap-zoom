@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:tap-tester-v4
+    steps:
+      - checkout
+      - run:
+          name: 'Setup virtual env'
+          command: |
+            pyenv local 3.8.0
+            python3 -mvenv /usr/local/share/virtualenvs/tap-zoom
+            source /usr/local/share/virtualenvs/tap-zoom/bin/activate
+            pip install -U pip setuptools
+            pip install .[dev]
+      - run:
+          name: 'JSON Validator'
+          command: |
+            source /usr/local/share/virtualenvs/tap-tester/bin/activate
+            stitch-validate-json /usr/local/share/virtualenvs/tap-zoom/lib/python3.8/site-packages/tap_zoom/schemas/*.json
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+  build_daily:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
