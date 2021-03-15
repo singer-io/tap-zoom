@@ -102,7 +102,7 @@
     "dept": {
       "type": [
         "null",
-        "integer"
+        "string"
       ]
     }
   }
