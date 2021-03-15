@@ -8,7 +8,6 @@ jobs:
       - run:
           name: 'Setup virtual env'
           command: |
-            pyenv local 3.8.0
             python3 -mvenv /usr/local/share/virtualenvs/tap-zoom
             source /usr/local/share/virtualenvs/tap-zoom/bin/activate
             pip install -U pip setuptools
