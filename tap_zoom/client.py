@@ -13,6 +13,13 @@ LOGGER = singer.get_logger()
 class Server5xxError(Exception):
     pass
 
+class Server429Error(Exception):
+    pass
+
+def log_backoff_attempt(details):
+    LOGGER.info("Error detected communicating with Zoom, triggering backoff: %d try",
+                details.get("tries"))
+
 class ZoomClient(object):
     BASE_URL = 'https://api.zoom.us/v2/'
 
@@ -62,10 +69,10 @@ class ZoomClient(object):
             json.dump(config, file, indent=2)
 
     @backoff.on_exception(backoff.expo,
-                          (Server5xxError, RateLimitException, ConnectionError),
-                          max_tries=5,
+                          (Server5xxError, RateLimitException, Server429Error, ConnectionError),
+                          max_tries=8,
+                          on_backoff=log_backoff_attempt,
                           factor=3)
-    @sleep_and_retry
     @limits(calls=300, period=60)
     def request(self,
                 method,
@@ -113,9 +120,9 @@ class ZoomClient(object):
 
         if response.status_code == 429:
             LOGGER.warn('Rate limit hit - 429')
-            raise RateLimitException()
+            raise Server429Error(response.text)
 
-        response.raise_for_status()        
+        response.raise_for_status()
 
         return response.json()
 
