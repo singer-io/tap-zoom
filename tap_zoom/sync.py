@@ -88,7 +88,7 @@ def sync_endpoint(client,
                                               child_endpoint,
                                               child_key_bag)
 
-        if endpoint.get('paginate', True) and data['next_page_token']:
+        if endpoint.get('paginate', True) and data.get('next_page_token', ''):
             # each endpoint has a different max page size, the server will send the one that is forced
             page_size = data['page_size']
             next_page_token = data['next_page_token']
