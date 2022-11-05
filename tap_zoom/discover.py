@@ -5,6 +5,7 @@ from singer.catalog import Catalog, CatalogEntry, Schema
 
 from tap_zoom.endpoints import ENDPOINTS_CONFIG
 
+
 SCHEMAS = {}
 FIELD_METADATA = {}
 
@@ -44,7 +45,14 @@ def get_schemas():
 
         pk = get_pk(stream_name)
 
-        metadata = []
+        metadata = [{
+            'metadata': {
+                'selected': False,
+                'inclusion': 'available',
+                'table-key-properties': pk,
+            },
+            'breadcrumb': []
+        }]
         for prop, json_schema in schema['properties'].items():
             if prop in pk:
                 inclusion = 'automatic'
