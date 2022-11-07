@@ -22,6 +22,7 @@ def write_schema(stream):
     schema = stream.schema.to_dict()
     singer.write_schema(stream.tap_stream_id, schema, stream.key_properties)
 
+
 def sync_endpoint(client,
                   catalog,
                   state,
@@ -41,11 +42,11 @@ def sync_endpoint(client,
     path = endpoint['path'].format(**key_bag)
 
     page_size = 1000
-    page_number = 1
+    next_page_token = ''
     while True:
         params = {
             'page_size': page_size,
-            'page_number': page_number
+            'next_page_token': next_page_token
         }
 
         data = client.get(path,
@@ -88,10 +89,10 @@ def sync_endpoint(client,
                                               child_endpoint,
                                               child_key_bag)
 
-        if endpoint.get('paginate', True) and page_number < data.get('page_count', 1):
+        if endpoint.get('paginate', True) and data.get('next_page_token', ''):
             # each endpoint has a different max page size, the server will send the one that is forced
             page_size = data['page_size']
-            page_number += 1
+            next_page_token = data['next_page_token']
         else:
             break
 
@@ -110,6 +111,7 @@ def get_required_streams(endpoints, selected_stream_names):
             required_streams.append(name)
             if child_required_streams:
                 required_streams += child_required_streams
+
     return required_streams
 
 def sync(client, catalog, state):

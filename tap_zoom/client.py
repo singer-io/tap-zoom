@@ -28,16 +28,24 @@ class ZoomClient(object):
         self.__session = requests.Session()
         self.__config_path = config_path
         self.__access_token = None
+        self.__refresh_token = None
         self.__use_jwt = False
 
         jwt = config.get('jwt')
+        refresh_token = config.get('refresh_token')
         if jwt:
             self.__access_token = jwt
             self.__use_jwt = True
         else:
             self.__client_id = config.get('client_id')
             self.__client_secret = config.get('client_secret')
-            self.__refresh_token = config.get('refresh_token')
+            if refresh_token:
+                self.__refresh_token = config.get('refresh_token')
+            else:
+                # For server-to-server oauth apps, there are no refresh
+                # tokens. We use the persistent access token.
+                # https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/
+                self.__access_token = config.get('access_token')
 
     def __enter__(self):
         return self
@@ -54,7 +62,6 @@ class ZoomClient(object):
                 'refresh_token': self.__refresh_token,
                 'grant_type': 'refresh_token'
             })
-
         self.__access_token = data['access_token']
         self.__refresh_token = data['refresh_token']
 
@@ -81,8 +88,8 @@ class ZoomClient(object):
                 ignore_zoom_error_codes=[],
                 ignore_http_error_codes=[],
                 **kwargs):
-        if url is None and \
-            self.__use_jwt == False and \
+        uses_refresh_token = self.__use_jwt == False and self.__refresh_token is not None
+        if uses_refresh_token and url is None and \
             (self.__access_token is None or \
              self.__expires_at <= datetime.utcnow()):
             self.refresh_access_token()

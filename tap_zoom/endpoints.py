@@ -80,7 +80,7 @@ ENDPOINTS_CONFIG = {
                         'path': 'webinars/{webinar_id}',
                         'pk': ['uuid'],
                         'provides': {
-                            'webinar_uuid': 'uuid'
+                            'webinar_uuid': 'id'
                         },
                         'children': {
                             'webinar_absentees': {
