@@ -102,6 +102,7 @@ def sync_child_endpoints(client,
         if child_stream_name not in required_streams:
             continue
 
+        update_current_stream(state, child_stream_name)
         if child_stream_name == 'recordings':
             # Special-handling for recordings bookmarks
             sync_recordings(client,
@@ -156,6 +157,10 @@ def sync_endpoint(client,
     while initial_load or len(next_page_token) > 0:
         if initial_load:
             initial_load = False
+        if state.get('currently_syncing') != stream_name:
+            # We may have just been syncing a child stream.
+            # Update the currently syncing stream if needed.
+            update_current_stream(state, stream_name)
 
         params = {
             'page_size': page_size,
