@@ -45,15 +45,14 @@ def sync_recordings(client,
     if start_date:
         start_datetime = singer.utils.strptime_to_utc(start_date)
     else:
-        # If no start_date or bookmark available, default to ingesting
-        # yesterday's data.
+        # If no start_date or bookmark available, default to
+        # ingesting yesterday's data.
         yesterday = current_date - timedelta(days=1)
         start_datetime = singer.utils.strptime_to_utc(yesterday.strftime(utc_format))
 
     # Stop at midnight of the current UTC datetime in case there
     # are additional recordings/meetings in progress.
     max_datetime = singer.utils.strptime_to_utc(current_date.strftime(utc_format))
-
 
     while start_datetime < max_datetime:
         next_datetime = start_datetime + timedelta(days=1)
@@ -62,15 +61,16 @@ def sync_recordings(client,
             'from': start_datetime.strftime(utc_format),
             'to': end_date
         }
-
         for record in records:
             # Get daily recordings for all records (users)
-            # We may need to restrict this to a subset of users in the future to
-            # limit the amount of data we're requesting.
-            curr_key_bag = update_key_bag_for_child(key_bag, parent_endpoint, record)
+            # We may need to restrict this to a subset of users
+            # in the future to limit the amount of data we're requesting.
+            curr_key_bag = update_key_bag_for_child(key_bag,
+                                                    parent_endpoint,
+                                                    record)
 
-            # Note that the recordings endpoint can only fetch up to 30 days
-            # of data at one time:
+            # Note that the recordings endpoint can only fetch
+            # up to 30 days of data at one time:
             # https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/recordingsList
             sync_endpoint(client,
                          catalog,
@@ -116,8 +116,9 @@ def sync_child_endpoints(client,
                             records=records)
         else:
             for record in records:
-                # Iterate through records and fill in relevant keys for child streams.
-                # Ex. 'meetings' requires a userId in the path.
+                # Iterate through records and fill in relevant keys
+                # for child streams.
+                # Ex. 'recordings' requires a userId in the path.
                 child_key_bag = update_key_bag_for_child(key_bag, endpoint, record)
                 sync_endpoint(client,
                             catalog,
