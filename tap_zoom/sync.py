@@ -71,7 +71,7 @@ def sync_recordings(client,
         for record in records:
             # Get daily recordings for all records (users)
             # We may need to restrict this to a subset of users
-            # in the future to limit the amount of data we're requesting.
+            # in the future to limit the amount of data we request.
             curr_key_bag = update_key_bag_for_child(key_bag,
                                                     parent_endpoint,
                                                     record)
@@ -126,7 +126,7 @@ def sync_child_endpoints(client,
             for record in records:
                 # Iterate through records and fill in relevant keys
                 # for child streams.
-                # Ex. 'recordings' requires a userId in the path.
+                # Ex. 'meetings' requires a userId in the path.
                 child_key_bag = update_key_bag_for_child(key_bag, endpoint, record)
                 sync_endpoint(client,
                             catalog,
