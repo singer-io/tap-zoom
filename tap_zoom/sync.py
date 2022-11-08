@@ -17,6 +17,13 @@ def write_schema(stream):
 
 
 def update_key_bag_for_child(key_bag, parent_endpoint, record):
+    # Constructs the properties needed to build the nested
+    # paths used by the Zoom APIs.
+    # Ex. the list of recordings is fetched at
+    #   /users/{userId}/recordings
+    # We get the list of user records and pass the following
+    # key bag to the recordings endpoint:
+    #   {"userId": <user_id>}
     updated_key_bag = dict(key_bag)
 
     if parent_endpoint and 'provides' in parent_endpoint:
