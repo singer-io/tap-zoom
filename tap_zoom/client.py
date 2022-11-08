@@ -30,6 +30,7 @@ class ZoomClient(object):
         self.__access_token = None
         self.__refresh_token = None
         self.__use_jwt = False
+        self.__expires_at = None
 
         jwt = config.get('jwt')
         refresh_token = config.get('refresh_token')
@@ -45,13 +46,38 @@ class ZoomClient(object):
                 # For server-to-server oauth apps, there are no refresh
                 # tokens. We use the persistent access token.
                 # https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/
-                self.__access_token = config.get('access_token')
+                self.__account_id = config.get('account_id')
 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
         self.__session.close()
+
+    def get_new_access_token(self):
+        # This is for the oauth server-to-server access type. From the docs:
+        # To get a new access token, your app should call the /oauth/token endpoint again with the account_credentials grant.
+        if self.__refresh_token is not None:
+            return
+
+        data = self.request(
+            'POST',
+            url='https://zoom.us/oauth/token',
+            auth=(self.__client_id, self.__client_secret),
+            data={
+                'grant_type': 'account_credentials',
+                'account_id': self.__account_id
+            })
+        self.__access_token = data['access_token']
+        self.__expires_at = datetime.utcnow() + \
+            timedelta(seconds=data['expires_in'] - 10) # pad by 10 seconds for clock drift
+
+        with open(self.__config_path) as file:
+            config = json.load(file)
+        config['access_token'] = data['access_token']
+        with open(self.__config_path, 'w') as file:
+            json.dump(config, file, indent=2)
+
 
     def refresh_access_token(self):
         data = self.request(
@@ -75,6 +101,16 @@ class ZoomClient(object):
         with open(self.__config_path, 'w') as file:
             json.dump(config, file, indent=2)
 
+    def check_and_renew_access_token(self):
+        uses_refresh_token = self.__use_jwt == False and self.__refresh_token is not None
+        expired_token = self.__expires_at is None or self.__expires_at <= datetime.utcnow()
+
+        if uses_refresh_token and (self.__access_token is None or expired_token):
+            self.refresh_access_token()
+        elif not uses_refresh_token and expired_token:
+            self.get_new_access_token()
+
+
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, RateLimitException, Server429Error, ConnectionError),
                           max_tries=8,
@@ -88,12 +124,9 @@ class ZoomClient(object):
                 ignore_zoom_error_codes=[],
                 ignore_http_error_codes=[],
                 **kwargs):
-        uses_refresh_token = self.__use_jwt == False and self.__refresh_token is not None
-        if uses_refresh_token and url is None and \
-            (self.__access_token is None or \
-             self.__expires_at <= datetime.utcnow()):
-            self.refresh_access_token()
-
+        if url is None:
+            self.check_and_renew_access_token()
+        
         if url is None and path:
             url = '{}{}'.format(self.BASE_URL, path)
 
