@@ -146,6 +146,12 @@ ENDPOINTS_CONFIG = {
                         'data_key': 'participants'
                     }
                 }
+            },
+            'recordings': {
+                'path': 'users/{user_id}/recordings',
+                'data_key': 'meetings',
+                'pk': ['uuid'],
+                'paginate': True
             }
         }
     }

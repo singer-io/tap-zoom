@@ -1,0 +1,160 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": [
+                "integer"
+            ]
+        },
+        "uuid": {
+            "type": [
+                "string"
+            ]
+        },
+        "account_id": {
+            "type": [
+                "string"
+            ]
+        },
+        "host_id": {
+            "type": [
+                "string"
+            ]
+        },
+        "topic": {
+            "type": [
+                "string"
+            ]
+        },
+        "type": {
+            "type": [
+                "integer"
+            ]
+        },
+        "start_time": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "timezone": {
+            "type": [
+              "null",
+              "string"
+            ]
+        },
+        "duration": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "total_size": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "recording_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "share_url": {
+            "type": [
+              "string"
+            ]
+        },
+        "recording_files": {
+            "type": [
+                "null",
+                "array"
+            ],
+            "items": {
+                "type": [
+                    "object"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                        "type": [
+                            "string"
+                        ]
+                    },
+                    "deleted_time": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "download_url": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "file_path": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "file_size": {
+                        "type": [
+                            "integer"
+                        ]
+                    },
+                    "file_type": {
+                        "type": [
+                            "string"
+                        ]
+                    },
+                    "file_extension": {
+                        "type": [
+                            "string"
+                        ]
+                    },
+                    "meeting_id": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "play_url": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "recording_start": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    },
+                    "recording_end": {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "format": "date-time"
+                    },
+                    "recording_type": {
+                        "type": [
+                            "string"
+                        ]
+                    },
+                    "status": {
+                        "type": [
+                            "string"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

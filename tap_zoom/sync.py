@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 
 import singer
 from singer import metrics, metadata, Transformer
@@ -9,18 +10,132 @@ from tap_zoom.endpoints import ENDPOINTS_CONFIG
 
 LOGGER = singer.get_logger()
 
-def get_bookmark(state, stream_name, default):
-    return state.get('bookmarks', {}).get(stream_name, default)
-
-def write_bookmark(state, stream_name, value):
-    if 'bookmarks' not in state:
-        state['bookmarks'] = {}
-    state['bookmarks'][stream_name] = value
-    singer.write_state(state)
 
 def write_schema(stream):
     schema = stream.schema.to_dict()
     singer.write_schema(stream.tap_stream_id, schema, stream.key_properties)
+
+
+def update_key_bag_for_child(key_bag, parent_endpoint, record):
+    # Constructs the properties needed to build the nested
+    # paths used by the Zoom APIs.
+    # Ex. the list of recordings is fetched at
+    #   /users/{userId}/recordings
+    # We get the list of user records and pass the following
+    # key bag to the recordings endpoint:
+    #   {"userId": <user_id>}
+    updated_key_bag = dict(key_bag)
+
+    if parent_endpoint and 'provides' in parent_endpoint:
+        for dest_key, obj_key in parent_endpoint['provides'].items():
+            updated_key_bag[dest_key] = record[obj_key]
+
+    return updated_key_bag
+
+
+def sync_recordings(client,
+                    catalog,
+                    state,
+                    required_streams,
+                    selected_streams,
+                    stream_name,
+                    endpoint,
+                    key_bag,
+                    parent_endpoint=None,
+                    records=[]):
+    utc_format = '%Y-%m-%d'
+    start_date = singer.get_bookmark(state,
+                                     stream_name,
+                                     'endDate',
+                                     client.start_date)
+    current_date = datetime.utcnow().date()
+    if start_date:
+        start_datetime = singer.utils.strptime_to_utc(start_date)
+    else:
+        # If no start_date or bookmark available, default to
+        # ingesting yesterday's data.
+        yesterday = current_date - timedelta(days=1)
+        start_datetime = singer.utils.strptime_to_utc(yesterday.strftime(utc_format))
+
+    # Stop at midnight of the current UTC datetime in case there
+    # are additional recordings/meetings in progress.
+    max_datetime = singer.utils.strptime_to_utc(current_date.strftime(utc_format))
+
+    while start_datetime < max_datetime:
+        next_datetime = start_datetime + timedelta(days=1)
+        end_date = next_datetime.strftime(utc_format)
+        params = {
+            'from': start_datetime.strftime(utc_format),
+            'to': end_date
+        }
+        for record in records:
+            # Get daily recordings for all records (users)
+            # We may need to restrict this to a subset of users
+            # in the future to limit the amount of data we request.
+            curr_key_bag = update_key_bag_for_child(key_bag,
+                                                    parent_endpoint,
+                                                    record)
+
+            # Note that the recordings endpoint can only fetch
+            # up to 30 days of data at one time:
+            # https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/recordingsList
+            sync_endpoint(client,
+                         catalog,
+                         state,
+                         required_streams,
+                         selected_streams,
+                         stream_name,
+                         endpoint,
+                         curr_key_bag,
+                         stream_params=params)
+
+        singer.write_bookmark(state, stream_name, 'endDate', end_date)
+        start_datetime = next_datetime
+
+
+def sync_child_endpoints(client,
+                         catalog,
+                         state,
+                         required_streams,
+                         selected_streams,
+                         stream_name,
+                         endpoint,
+                         key_bag,
+                         records=[]):
+    if 'children' not in endpoint or len(records) == 0:
+        return
+
+    for child_stream_name, child_endpoint in endpoint['children'].items():
+        if child_stream_name not in required_streams:
+            continue
+
+        update_current_stream(state, child_stream_name)
+        if child_stream_name == 'recordings':
+            # Special-handling for recordings bookmarks
+            sync_recordings(client,
+                            catalog,
+                            state,
+                            required_streams,
+                            selected_streams,
+                            child_stream_name,
+                            child_endpoint,
+                            key_bag,
+                            parent_endpoint=endpoint,
+                            records=records)
+        else:
+            for record in records:
+                # Iterate through records and fill in relevant keys
+                # for child streams.
+                # Ex. 'meetings' requires a userId in the path.
+                child_key_bag = update_key_bag_for_child(key_bag, endpoint, record)
+                sync_endpoint(client,
+                            catalog,
+                            state,
+                            required_streams,
+                            selected_streams,
+                            child_stream_name,
+                            child_endpoint,
+                            child_key_bag)
 
 
 def sync_endpoint(client,
@@ -30,7 +145,8 @@ def sync_endpoint(client,
                   selected_streams,
                   stream_name,
                   endpoint,
-                  key_bag):
+                  key_bag,
+                  stream_params={}):
     persist = endpoint.get('persist', True)
 
     if persist:
@@ -43,10 +159,20 @@ def sync_endpoint(client,
 
     page_size = 1000
     next_page_token = ''
-    while True:
+    initial_load = True
+
+    while initial_load or len(next_page_token) > 0:
+        if initial_load:
+            initial_load = False
+        if state.get('currently_syncing') != stream_name:
+            # We may have just been syncing a child stream.
+            # Update the currently syncing stream if needed.
+            update_current_stream(state, stream_name)
+
         params = {
             'page_size': page_size,
-            'next_page_token': next_page_token
+            'next_page_token': next_page_token,
+            **stream_params,
         }
 
         data = client.get(path,
@@ -73,28 +199,22 @@ def sync_endpoint(client,
                                                              mdata)
                         singer.write_record(stream_name, record_typed)
                         counter.increment()
-                    if 'children' in endpoint:
-                        child_key_bag = dict(key_bag)
-                        if 'provides' in endpoint:
-                            for dest_key, obj_key in endpoint['provides'].items():
-                                child_key_bag[dest_key] = record[obj_key]
-                        for child_stream_name, child_endpoint in endpoint['children'].items():
-                            if child_stream_name in required_streams:
-                                sync_endpoint(client,
-                                              catalog,
-                                              state,
-                                              required_streams,
-                                              selected_streams,
-                                              child_stream_name,
-                                              child_endpoint,
-                                              child_key_bag)
 
-        if endpoint.get('paginate', True) and data.get('next_page_token', ''):
+                sync_child_endpoints(client,
+                                     catalog,
+                                     state,
+                                     required_streams,
+                                     selected_streams,
+                                     stream_name,
+                                     endpoint,
+                                     key_bag,
+                                     records=records)
+
+        next_page_token = data.get('next_page_token', '')
+        if endpoint.get('paginate', True):
             # each endpoint has a different max page size, the server will send the one that is forced
             page_size = data['page_size']
-            next_page_token = data['next_page_token']
-        else:
-            break
+
 
 def update_current_stream(state, stream_name=None):  
     set_currently_syncing(state, stream_name) 

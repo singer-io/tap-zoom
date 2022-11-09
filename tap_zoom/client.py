@@ -31,6 +31,7 @@ class ZoomClient(object):
         self.__refresh_token = None
         self.__use_jwt = False
         self.__expires_at = None
+        self.start_date = config.get('start_date')
 
         jwt = config.get('jwt')
         refresh_token = config.get('refresh_token')
