@@ -1,6 +1,7 @@
 
 ENDPOINTS_CONFIG = {
     'users': {
+        'persist': True,
         'path': 'users',
         'pk': ['id'],
         'data_key': 'users',
