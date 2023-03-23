@@ -44,7 +44,9 @@ def get_schemas():
 
         pk = get_pk(stream_name)
 
-        mdata = { "table-key-properties": pk, "inclusion": "available"}
+        mdata = {"table-key-properties": pk,
+                "forced-replication-method": "FULL_TABLE",
+                "inclusion": "available"}
         metadata = [{"breadcrumb": [], "metadata": mdata}]
         for prop, json_schema in schema['properties'].items():
             if prop in pk:
