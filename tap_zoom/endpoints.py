@@ -4,6 +4,7 @@ ENDPOINTS_CONFIG = {
         'path': 'users',
         'pk': ['id'],
         'data_key': 'users',
+        'forced-replication-method': 'FULL_TABLE',
         'provides': {
             'user_id': 'id'
         },
@@ -20,6 +21,7 @@ ENDPOINTS_CONFIG = {
                         'paginate': False,
                         'path': 'meetings/{meeting_id}',
                         'pk': ['uuid'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'provides': {
                             'meeting_uuid': 'uuid'
                         },
@@ -28,12 +30,14 @@ ENDPOINTS_CONFIG = {
                                 'paginate': False,
                                 'path': 'past_meetings/{meeting_uuid}/polls',
                                 'pk': ['meeting_uuid', 'email'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
                             },
                             'meeting_files': {
                                 'paginate': False,
                                 'path': 'past_meetings/{meeting_uuid}/files',
                                 'pk': ['meeting_uuid', 'file_name'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'in_meeting_files'
                             }
                         }
@@ -41,27 +45,32 @@ ENDPOINTS_CONFIG = {
                     'meeting_registrants': {
                         'path': 'meetings/{meeting_id}/registrants',
                         'pk': ['meeting_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'registrants'
                     },
                     'meeting_polls': {
                         'path': 'meetings/{meeting_id}/polls',
                         'pk': ['meeting_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'polls'
                     },
                     'meeting_questions': {
                         'paginate': False,
                         'path': 'meetings/{meeting_id}/registrants/questions',
                         'pk': ['meeting_id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'ignore_zoom_error_codes': [3000]
                     },
                     'report_meetings': {
                         'paginate': False,
                         'path': 'report/meetings/{meeting_id}',
-                        'pk': ['uuid']
+                        'pk': ['uuid'],
+                        'forced-replication-method': 'FULL_TABLE'
                     },
                     'report_meeting_participants': {
                         'path': 'report/meetings/{meeting_id}/participants',
                         'pk': ['meeting_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'participants'
                     }
                 }
@@ -79,6 +88,7 @@ ENDPOINTS_CONFIG = {
                         'paginate': False,
                         'path': 'webinars/{webinar_id}',
                         'pk': ['uuid'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'provides': {
                             'webinar_uuid': 'uuid'
                         },
@@ -86,6 +96,7 @@ ENDPOINTS_CONFIG = {
                             'webinar_absentees': {
                                 'path': 'past_webinars/{webinar_uuid}/absentees',
                                 'pk': ['webinar_uuid', 'id'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'registrants',
                                 'ignore_http_error_codes': [404]
                             },
@@ -93,18 +104,21 @@ ENDPOINTS_CONFIG = {
                                 'paginate': False,
                                 'path': 'past_webinars/{webinar_uuid}/polls',
                                 'pk': ['webinar_uuid', 'email'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
                             },
                             'webinar_qna_results': {
                                 'paginate': False,
                                 'path': 'past_webinars/{webinar_uuid}/qa',
                                 'pk': ['webinar_uuid', 'email'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
                             },
                             'webinar_files': {
                                 'paginate': False,
                                 'path': 'past_webinars/{webinar_uuid}/files',
                                 'pk': ['webinar_uuid', 'file_name'],
+                                'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'in_meeting_files'
                             }
                         }
@@ -112,37 +126,44 @@ ENDPOINTS_CONFIG = {
                     'webinar_panelists': {
                         'path': 'webinars/{webinar_id}/panelists',
                         'pk': ['webinar_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'panelists'
                     },
                     'webinar_registrants': {
                         'path': 'webinars/{webinar_id}/registrants',
                         'pk': ['webinar_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'registrants'
                     },
                     'webinar_polls': {
                         'path': 'webinars/{webinar_id}/polls',
                         'pk': ['webinar_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'polls'
                     },
                     'webinar_questions': {
                         'paginate': False,
                         'path': 'webinars/{webinar_id}/registrants/questions',
                         'pk': ['webinar_id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'ignore_zoom_error_codes': [3000]
                     },
                     'webinar_tracking_sources': {
                         'path': 'webinars/{webinar_id}/tracking_sources',
                         'pk': ['webinar_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'tracking_sources'
                     },
                     'report_webinars': {
                         'paginate': False,
                         'path': 'report/webinars/{webinar_id}',
-                        'pk': ['uuid']
+                        'pk': ['uuid'],
+                        'forced-replication-method': 'FULL_TABLE',
                     },
                     'report_webinar_participants': {
                         'path': 'report/webinars/{webinar_id}/participants',
                         'pk': ['webinar_id', 'id'],
+                        'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'participants'
                     }
                 }

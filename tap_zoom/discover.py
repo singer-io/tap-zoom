@@ -8,16 +8,16 @@ from tap_zoom.endpoints import ENDPOINTS_CONFIG
 SCHEMAS = {}
 FIELD_METADATA = {}
 
-def get_pk(stream_name, endpoints=None):
+def get_field_value(stream_name, field_name, endpoints=None):
     if not endpoints:
         endpoints = ENDPOINTS_CONFIG
 
     for endpoint_stream_name, endpoint in endpoints.items():
         if stream_name == endpoint_stream_name:
-            return endpoint['pk']
+            return endpoint[field_name]
 
         if 'children' in endpoint:
-            pk = get_pk(stream_name, endpoints=endpoint['children'])
+            pk = get_field_value(stream_name, field_name, endpoints=endpoint['children'])
             if pk:
                 return pk
 
@@ -42,10 +42,11 @@ def get_schemas():
             
         SCHEMAS[stream_name] = schema
 
-        pk = get_pk(stream_name)
+        pk = get_field_value(stream_name, 'pk')
+        repl_method = get_field_value(stream_name, 'forced-replication-method')
 
         mdata = {"table-key-properties": pk,
-                "forced-replication-method": "FULL_TABLE",
+                "forced-replication-method": repl_method,
                 "inclusion": "available"}
         metadata = [{"breadcrumb": [], "metadata": mdata}]
         for prop, json_schema in schema['properties'].items():
@@ -69,7 +70,7 @@ def discover():
 
     for stream_name, schema_dict in schemas.items():
         schema = Schema.from_dict(schema_dict)
-        pk = get_pk(stream_name)
+        pk = get_field_value(stream_name, 'pk')
         metadata = field_metadata[stream_name]
 
         catalog.streams.append(CatalogEntry(
