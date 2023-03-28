@@ -59,7 +59,9 @@ class ZoomBase(BaseCase):
     @staticmethod
     def get_credentials():
         return {
-            'api_key':os.getenv('TAP_CLOSEIO_API_KEY'),
+            'client_id':os.getenv('TAP_ZOOM_CLIENT_ID'),
+            'client_secret':os.getenv('TAP_ZOOM_CLIENT_SECRET'),
+            'refresh_token':os.getenv('TAP_ZOOM_REFRESH_TOKEN')
         }
 
 
@@ -192,7 +194,7 @@ class ZoomBase(BaseCase):
         super().setUpClass(logging="Ensuring environment variables are sourced.")
         missing_envs = [
             x for x in [
-                'TAP_CLOSEIO_API_KEY' #TODO add account_id and password if needed(credentials)
+                "TAP_ZOOM_CLIENT_ID", "TAP_ZOOM_CLIENT_SECRET", "TAP_ZOOM_REFRESH_TOKEN"
             ] if os.getenv(x) is None
         ]
 
