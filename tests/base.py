@@ -42,17 +42,11 @@ class ZoomBase(BaseCase):
         """Configuration properties required for the tap."""
 
         return_value = {
-            'start_date':'2015-03-25T00:00:00Z', 
             'client_id':os.getenv('TAP_ZOOM_CLIENT_ID'),
             'client_secret':os.getenv('TAP_ZOOM_CLIENT_SECRET'),
             'refresh_token':os.getenv('TAP_ZOOM_REFRESH_TOKEN')
         }
 
-        if original:
-            return return_value
-
-        if self.start_date:
-            return_value["start_date"] = self.start_date
         return return_value
 
 
@@ -72,112 +66,107 @@ class ZoomBase(BaseCase):
             'users': {
                 self.PRIMARY_KEYS: {"id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
-            },
-            'list_meetings': {
-                self.PRIMARY_KEYS: {"id"},
-                self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
+            },
+            'meeting_polls': {
+                self.PRIMARY_KEYS: {"meeting_id", "id"},
+                self.REPLICATION_METHOD: self.FULL_TABLE,
+                self.RESPECTS_START_DATE: False,
             },
             'meeting_poll_results': {
                 self.PRIMARY_KEYS: {"meeting_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'meeting_files': {
                 self.PRIMARY_KEYS: {"meeting_uuid", "file_name"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'meeting_registrants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'meeting_questions': {
                 self.PRIMARY_KEYS: {"meeting_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'report_meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'report_meeting_participants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
-            },
-            'list_webinars': {
-                self.PRIMARY_KEYS: {"id"},
-                self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_absentees': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_poll_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_qna_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_files': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "file_name"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_panelists': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_registrants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_polls': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_questions': {
                 self.PRIMARY_KEYS: {"webinar_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'webinar_tracking_sources': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'report_webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
             'report_webinar_participants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.OBEYS_START_DATE: False,
+                self.RESPECTS_START_DATE: False,
             },
         }
 
