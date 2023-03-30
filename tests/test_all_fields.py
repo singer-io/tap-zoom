@@ -16,6 +16,4 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
         return "tt_zoom_all_fields_test"
 
     def streams_to_test(self):
-        # streams_to_exclude = {'event_log', 'custom_fields'}
-        return {'users'}
-        # return set(self.expected_metadata().keys())
+        return set(self.expected_metadata().keys())
