@@ -10,7 +10,6 @@ from base import ZoomBase
 class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
     """Test that with no fields selected for a stream automatic fields are still replicated"""
 
-
     @staticmethod
     def name():
         return "tt_zoom_all_fields_test"
