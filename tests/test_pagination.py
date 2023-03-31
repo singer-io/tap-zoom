@@ -13,6 +13,11 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
     @staticmethod
     def name():
         return "tt_ga4_pagination"
-    
+
+
+    def get_page_limit_for_stream(self, stream):
+        return self.PAGE_SIZE
+
+
     def streams_to_test(self):
         return set(self.expected_metadata().keys())
