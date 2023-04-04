@@ -36,7 +36,6 @@ def sync_endpoint(client,
         stream = catalog.get_stream(stream_name)
         schema = stream.schema.to_dict()
         mdata = metadata.to_map(stream.metadata)
-        write_schema(stream)
 
     path = endpoint['path'].format(**key_bag)
 
@@ -122,7 +121,8 @@ def sync(client, catalog, state):
     selected_stream_names = []
     for selected_stream in selected_streams:
         selected_stream_names.append(selected_stream.tap_stream_id)
-
+        stream = catalog.get_stream(selected_stream.tap_stream_id)
+        write_schema(stream)
     required_streams = get_required_streams(ENDPOINTS_CONFIG, selected_stream_names)
 
     for stream_name, endpoint in ENDPOINTS_CONFIG.items():
