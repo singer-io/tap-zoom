@@ -42,7 +42,7 @@
         "string"
       ]
     },
-    "county": {
+    "country": {
       "type": [
         "null",
         "string"
@@ -151,6 +151,12 @@
       "type": [
         "null",
         "string"
+      ]
+    },
+    "participant_pin_code": {
+      "type": [
+        "null",
+        "integer"
       ]
     }
   }
