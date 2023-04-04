@@ -40,6 +40,19 @@
               "null",
               "string"
             ]
+          },
+          "date_time": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "polling_id": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       }
