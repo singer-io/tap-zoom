@@ -12,6 +12,18 @@
         "string"
       ]
     },
+    "assistant_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "host_email": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "uuid": {
       "type": [
         "string"
@@ -97,7 +109,7 @@
         "string"
       ]
     },
-    "encrypted_Password": {
+    "encrypted_password": {
       "type": [
         "null",
         "string"
@@ -106,7 +118,13 @@
     "pmi": {
       "type": [
         "null",
-        "integer"
+        "string"
+      ]
+    },
+    "pre_schedule": {
+      "type": [
+        "null",
+        "boolean"
       ]
     },
     "tracking_fields": {
@@ -131,11 +149,17 @@
               "null",
               "string"
             ]
+          },
+          "visible": {
+            "type": [
+              "null",
+              "boolean"
+            ]
           }
         }
       }
     },
-    "occurences": {
+    "occurrences": {
       "type": [
         "null",
         "array"
@@ -146,7 +170,7 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "occurence_id": {
+          "occurrence_id": {
             "type": [
               "null",
               "string"
@@ -181,6 +205,42 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "allow_multiple_devices": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "calendar_type": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "email_notification": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "encryption_type": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "focus_mode": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "show_share_button": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "host_video": {
           "type": [
             "null",
@@ -188,6 +248,12 @@
           ]
         },
         "participant_video": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "private_meeting": {
           "type": [
             "null",
             "boolean"
@@ -203,6 +269,12 @@
           "type": [
             "null",
             "boolean"
+          ]
+        },
+        "jbh_time": {
+          "type": [
+            "null",
+            "integer"
           ]
         },
         "join_before_host": {
@@ -247,19 +319,13 @@
             "string"
           ]
         },
-        "auto_recording": {
+        "audio_conference_info": {
           "type": [
             "null",
             "string"
           ]
         },
-        "enforce_login": {
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
-        "enforce_login_domains": {
+        "auto_recording": {
           "type": [
             "null",
             "string"
@@ -269,6 +335,18 @@
           "type": [
             "null",
             "string"
+          ]
+        },
+        "alternative_hosts_email_notification": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "alternative_host_update_polls": {
+          "type": [
+            "null",
+            "boolean"
           ]
         },
         "close_registration": {
@@ -283,6 +361,12 @@
             "boolean"
           ]
         },
+        "host_save_video_order": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "global_dial_in_countries": {
           "type": [
             "null",
@@ -292,6 +376,47 @@
             "type": [
               "string"
             ]
+          }
+        },
+        "language_interpretation": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "interpreters": {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": [
+                  "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "email": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "languages": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "global_dial_in_numbers": {
@@ -338,16 +463,148 @@
             }
           }
         },
+        "breakout_room": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "rooms": {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": [
+                  "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "participants": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "custom_keys": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": [
+              "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "value": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            }
+          }
+        },
+        "approved_or_denied_countries_or_regions": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "approved_list": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "denied_list": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "method": {
+              "type": [
+                "null",
+                "string"
+              ]
+            }
+          }
+        },
+        "authentication_exception": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": [
+              "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "email": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "name": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "join_url": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            }
+          }
+        },
         "contact_name": {
           "type": [
             "null",
-            "boolean"
+            "string"
           ]
         },
         "contact_email": {
           "type": [
             "null",
-            "boolean"
+            "string"
           ]
         },
         "registrants_confirmation_email": {
@@ -366,6 +623,12 @@
           "type": [
             "null",
             "boolean"
+          ]
+        },
+        "authentication_name": {
+          "type": [
+            "null",
+            "string"
           ]
         },
         "authentication_option": {
@@ -404,7 +667,7 @@
         "weekly_days": {
           "type": [
             "null",
-            "integer"
+            "string"
           ]
         },
         "monthly_day": {

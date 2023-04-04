@@ -42,7 +42,7 @@
         "string"
       ]
     },
-    "county": {
+    "country": {
       "type": [
         "null",
         "string"

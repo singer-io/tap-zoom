@@ -46,10 +46,34 @@
     "duration": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     },
     "attentiveness_score": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "customer_key": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "failover": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "registrant_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "status": {
       "type": [
         "null",
         "string"
