@@ -5,7 +5,9 @@ import backoff
 import requests
 import singer
 from singer import metrics
-from ratelimit import limits, sleep_and_retry, RateLimitException
+from singer.utils import strptime_to_utc, now, strftime
+from .utils import write_config
+from ratelimit import limits, RateLimitException
 from requests.exceptions import ConnectionError
 
 LOGGER = singer.get_logger()
@@ -23,12 +25,15 @@ def log_backoff_attempt(details):
 class ZoomClient(object):
     BASE_URL = 'https://api.zoom.us/v2/'
 
-    def __init__(self, config, config_path):
+    def __init__(self, config, config_path, dev_mode = False):
         self.__user_agent = config.get('user_agent')
         self.__session = requests.Session()
         self.__config_path = config_path
+        self.config = config
         self.__access_token = None
         self.__use_jwt = False
+        self.dev_mode = dev_mode
+        self.__expires_at = None
 
         jwt = config.get('jwt')
         if jwt:
@@ -46,6 +51,18 @@ class ZoomClient(object):
         self.__session.close()
 
     def refresh_access_token(self):
+        if self.dev_mode:
+            try:
+                self.__access_token = self.config['access_token']
+                self.__expires_at = strptime_to_utc(self.config['expires_in'])
+            except KeyError as ex:
+                raise Exception("Unable to locate key in config") from ex
+            if not self.__access_token or self.__expires_at < now():
+                raise Exception("Access Token in config is expired, unable to authenticate in dev mode")
+
+        if self.__access_token and self.__expires_at > now():
+            return
+
         data = self.request(
             'POST',
             url='https://zoom.us/oauth/token',
@@ -57,16 +74,16 @@ class ZoomClient(object):
 
         self.__access_token = data['access_token']
         self.__refresh_token = data['refresh_token']
-
-        self.__expires_at = datetime.utcnow() + \
+        self.__expires_at = now() + \
             timedelta(seconds=data['expires_in'] - 10) # pad by 10 seconds for clock drift
 
-        ## refresh_token changes every call to refresh
-        with open(self.__config_path) as file:
-            config = json.load(file)
-        config['refresh_token'] = data['refresh_token']
-        with open(self.__config_path, 'w') as file:
-            json.dump(config, file, indent=2)
+        if not self.dev_mode:
+            update_config_keys = {
+                                    "refresh_token":self.__refresh_token,
+                                    "access_token":self.__access_token,
+                                    "expires_in": strftime(self.__expires_at)
+                                }
+            self.config = write_config(self.__config_path, update_config_keys)
 
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, Server429Error, ConnectionError),
@@ -90,7 +107,7 @@ class ZoomClient(object):
         if url is None and \
             self.__use_jwt == False and \
             (self.__access_token is None or \
-             self.__expires_at <= datetime.utcnow()):
+             self.__expires_at <= now()):
             self.refresh_access_token()
 
         if url is None and path:
@@ -127,6 +144,11 @@ class ZoomClient(object):
         if response.status_code == 429:
             LOGGER.warn('Rate limit hit - 429')
             raise Server429Error(response.text)
+
+        if response.status_code != 200:
+            zoom_response = response.json()
+            zoom_response.update({'status': response.status_code})
+            raise Exception('Unable to authenticate (zoom response: `{}`)'.format(zoom_response))
 
         response.raise_for_status()
 
