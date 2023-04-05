@@ -5,7 +5,7 @@ import backoff
 import requests
 import singer
 from singer import metrics
-from ratelimit import limits, sleep_and_retry, RateLimitException
+from ratelimit import limits, RateLimitException
 from requests.exceptions import ConnectionError
 
 LOGGER = singer.get_logger()
@@ -28,16 +28,9 @@ class ZoomClient(object):
         self.__session = requests.Session()
         self.__config_path = config_path
         self.__access_token = None
-        self.__use_jwt = False
-
-        jwt = config.get('jwt')
-        if jwt:
-            self.__access_token = jwt
-            self.__use_jwt = True
-        else:
-            self.__client_id = config.get('client_id')
-            self.__client_secret = config.get('client_secret')
-            self.__refresh_token = config.get('refresh_token')
+        self.__client_id = config.get('client_id')
+        self.__client_secret = config.get('client_secret')
+        self.__refresh_token = config.get('refresh_token')
 
     def __enter__(self):
         return self
@@ -88,7 +81,6 @@ class ZoomClient(object):
                 ignore_http_error_codes=[],
                 **kwargs):
         if url is None and \
-            self.__use_jwt == False and \
             (self.__access_token is None or \
              self.__expires_at <= datetime.utcnow()):
             self.refresh_access_token()
