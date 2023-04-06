@@ -23,14 +23,14 @@ jobs:
           command: |
             source /usr/local/share/virtualenvs/tap-zoom/bin/activate
             pylint tap_zoom -d C,R,W
-      # - run:
-      #     name: 'Unit Tests'
-      #     command: |
-      #       source /usr/local/share/virtualenvs/tap-zoom/bin/activate
-      #       pip install coverage
-      #       pip install nose coverage parameterized
-      #       nosetests --with-coverage --cover-erase --cover-package=tap_zoom --cover-html-dir=htmlcov tests/unittests
-      #       coverage html
+      - run:
+          name: 'Unit Tests'
+          command: |
+            source /usr/local/share/virtualenvs/tap-zoom/bin/activate
+            pip install coverage
+            pip install nose coverage parameterized
+            nosetests --with-coverage --cover-erase --cover-package=tap_zoom --cover-html-dir=htmlcov tests/unittests
+            coverage html
       # - run:
       #     name: 'Integration Tests'
       #     command: |
