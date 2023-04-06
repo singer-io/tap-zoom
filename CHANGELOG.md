@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+- Added following changes as part of this release :
+  - Add Top level breadcrumb [#14](https://github.com/singer-io/tap-zoom/pull/14)
+  - fix to remove repetitive writing of schema during sync [#17](https://github.com/singer-io/tap-zoom/pull/17)
+  - Update the singer-python version to latest
+  - Add unit test case [#21](https://github.com/singer-io/tap-zoom/pull/21)
+  - Update the config.yml [#15](https://github.com/singer-io/tap-zoom/pull/15)
+
 ## [v1.0.0](https://github.com/singer-io/tap-zoom/tree/v1.0.0) (2021-03-15)
 
 [Full Changelog](https://github.com/singer-io/tap-zoom/compare/v0.0.3...v1.0.0)
