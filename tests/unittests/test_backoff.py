@@ -8,18 +8,16 @@ from tap_zoom.client import ZoomClient, Server5xxError
 
 class Mockresponse:
     """ mocking response"""
-    def __init__(self, params = None, status_code = 200, endpoint = '', ignore_zoom_error_codes = [], ignore_http_error_codes = [], raise_error=False):
+    def __init__(self, params = None, status_code = 200, endpoint = '', ignore_zoom_error_codes = [], ignore_http_error_codes = []):
         self.endpoint = endpoint
         self.ignore_zoom_error_codes = ignore_zoom_error_codes
         self.ignore_http_error_codes = ignore_http_error_codes
         self.status_code = status_code
         self.params = params
-        self.raise_error = raise_error
-
 
 def mocked_failed_500_server_error(**kwargs):
     """ mocking 500 server error response"""
-    return Mockresponse(params={'page_size': 1000, 'page_number': 1}, status_code = 500, endpoint = 'list_webinars', ignore_zoom_error_codes = [200], ignore_http_error_codes = [], raise_error = True)
+    return Mockresponse(params={'page_size': 1000, 'page_number': 1}, status_code = 500, endpoint = 'list_webinars', ignore_zoom_error_codes = [200], ignore_http_error_codes = [])
 
 class TestBackoff(unittest.TestCase):
     """ checking the backoff"""
