@@ -14,6 +14,11 @@ jobs:
             pip install .[dev]
             pip install pylint
       - run:
+          name: 'JSON Validator'
+          command: |
+            source /usr/local/share/virtualenvs/tap-tester/bin/activate
+            stitch-validate-json /usr/local/share/virtualenvs/tap-zoom/lib/python3.8/site-packages/tap_zoom/schemas/*.json
+      - run:
           name: 'pylint'
           command: |
             source /usr/local/share/virtualenvs/tap-zoom/bin/activate
