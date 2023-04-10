@@ -83,11 +83,6 @@ class ZoomBase(BaseCase):
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
             },
-            'meeting_files': {
-                self.PRIMARY_KEYS: {"meeting_uuid", "file_name"},
-                self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.RESPECTS_START_DATE: False,
-            },
             'meeting_registrants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
@@ -125,11 +120,6 @@ class ZoomBase(BaseCase):
             },
             'webinar_qna_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
-                self.REPLICATION_METHOD: self.FULL_TABLE,
-                self.RESPECTS_START_DATE: False,
-            },
-            'webinar_files': {
-                self.PRIMARY_KEYS: {"webinar_uuid", "file_name"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
             },
