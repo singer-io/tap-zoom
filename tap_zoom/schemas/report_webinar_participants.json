@@ -49,12 +49,6 @@
         "integer"
       ]
     },
-    "attentiveness_score": {
-      "type": [
-        "null",
-        "string"
-      ]
-    },
     "customer_key": {
       "type": [
         "null",
