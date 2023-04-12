@@ -1,8 +1,4 @@
-import unittest
-
-from tap_tester import menagerie, connections
 from tap_tester.base_suite_tests.discovery_test import DiscoveryTest
-
 from base import ZoomBase
 
 
