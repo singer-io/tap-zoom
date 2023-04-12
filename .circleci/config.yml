@@ -31,38 +31,17 @@ jobs:
             pip install nose coverage parameterized
             nosetests --with-coverage --cover-erase --cover-package=tap_zoom --cover-html-dir=htmlcov tests/unittests
             coverage html
+      - run:
+          name: 'Integration Tests'
+          command: |
+            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox dev_env.sh
+            source dev_env.sh
+            source /usr/local/share/virtualenvs/tap-tester/bin/activate
+            run-test --tap=tap-zoom tests
       - store_test_results:
           path: test_output/report.xml
       - store_artifacts:
           path: htmlcov
-  run_integration_tests:
-    docker:
-      - image: 218546966473.dkr.ecr.us-east-1.amazonaws.com/circle-ci:stitch-tap-tester
-    parallelism: 4
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /usr/local/share/virtualenvs
-      - run:
-          name: 'Run Integration Tests'
-          no_output_timeout: 60m
-          command: |
-            aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox dev_env.sh
-            source dev_env.sh
-            mkdir /tmp/${CIRCLE_PROJECT_REPONAME}
-            export STITCH_CONFIG_DIR=/tmp/${CIRCLE_PROJECT_REPONAME}
-            source /usr/local/share/virtualenvs/tap-tester/bin/activate
-            circleci tests glob "tests/test_*.py" | circleci tests split > ./tests-to-run
-            if [ -s ./tests-to-run ]; then
-              for test_file in $(cat ./tests-to-run)
-              do
-                run-test --tap=${CIRCLE_PROJECT_REPONAME} $test_file
-              done
-            fi
-      - slack/notify-on-failure:
-          only_for_branches: master
-      - store_artifacts:
-          path: /tmp/tap-zoom
 workflows:
   version: 2
   commit:
