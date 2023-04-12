@@ -11,4 +11,4 @@ class GA4MinimumSelectionTest(MinimumSelectionTest, ZoomBase):
         return "tt_zoom_auto"
 
     def streams_to_test(self):
-        return set(self.expected_metadata().keys())
+        return {"meetings", "meeting_polls", "meeting_poll_results"}

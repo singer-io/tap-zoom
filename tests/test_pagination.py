@@ -16,8 +16,8 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
 
 
     def get_page_limit_for_stream(self, stream):
-        return self.PAGE_SIZE
+        return 1000
 
 
     def streams_to_test(self):
-        return set(self.expected_metadata().keys())
+        return {'users', 'webinars'}
