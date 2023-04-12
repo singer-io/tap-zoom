@@ -1,9 +1,8 @@
 from tap_tester.base_suite_tests.automatic_fields_test import MinimumSelectionTest
-
 from base import ZoomBase
 
 
-class GA4MinimumSelectionTest(MinimumSelectionTest, ZoomBase):
+class ZoomMinimumSelectionTest(MinimumSelectionTest, ZoomBase):
     """Standard Automatic Fields Test"""
 
     @staticmethod
