@@ -69,10 +69,16 @@ class ZoomClient(object):
             json.dump(config, file, indent=2)
 
     @backoff.on_exception(backoff.expo,
-                          (Server5xxError, RateLimitException, Server429Error, ConnectionError),
+                          (Server5xxError, Server429Error, ConnectionError),
                           max_tries=8,
                           on_backoff=log_backoff_attempt,
                           factor=3)
+    @backoff.on_exception(backoff.constant,
+                          RateLimitException,
+                          max_tries=8,
+                          on_backoff=log_backoff_attempt,
+                          jitter=None,
+                          interval=15)
     @limits(calls=300, period=60)
     def request(self,
                 method,
