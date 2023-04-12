@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+- Update backoff logic for RateLimitException [#23](https://github.com/singer-io/tap-zoom/pull/23)
+
 ## 1.1.0
 - Added following changes as part of this release :
   - Add Top level breadcrumb [#14](https://github.com/singer-io/tap-zoom/pull/14)
