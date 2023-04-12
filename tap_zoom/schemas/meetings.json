@@ -259,18 +259,6 @@
             "boolean"
           ]
         },
-        "cn_meeting": {
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
-        "in_meeting": {
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
         "jbh_time": {
           "type": [
             "null",
@@ -496,8 +484,13 @@
                   "participants": {
                     "type": [
                       "null",
-                      "string"
-                    ]
+                      "array"
+                    ],
+                    "items": {
+                      "type": [
+                        "string"
+                      ]
+                    }
                   }
                 }
               }
@@ -540,14 +533,24 @@
             "approved_list": {
               "type": [
                 "null",
-                "string"
-              ]
+                "array"
+              ],
+              "items": {
+                "type": [
+                  "string"
+                ]
+              }
             },
             "denied_list": {
               "type": [
                 "null",
-                "string"
-              ]
+                "array"
+              ],
+              "items": {
+                "type": [
+                  "string"
+                ]
+              }
             },
             "enable": {
               "type": [

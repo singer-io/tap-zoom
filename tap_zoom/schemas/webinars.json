@@ -409,12 +409,6 @@
             "boolean"
           ]
         },
-        "close_registration": {
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
         "show_share_button": {
           "type": [
             "null",
