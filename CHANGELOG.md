@@ -2,6 +2,7 @@
 
 ## 1.1.1
 - Update backoff logic for RateLimitException [#23](https://github.com/singer-io/tap-zoom/pull/23)
+- Update API doc links in README.md [#24](https://github.com/singer-io/tap-zoom/pull/24)
 
 ## 1.1.0
 - Added following changes as part of this release :
