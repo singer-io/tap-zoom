@@ -10,4 +10,4 @@ class ZoomMinimumSelectionTest(MinimumSelectionTest, ZoomBase):
         return "tt_zoom_auto"
 
     def streams_to_test(self):
-        return {"meetings", "meeting_polls", "meeting_poll_results"}
+        return {'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
