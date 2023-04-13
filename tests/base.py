@@ -1,7 +1,3 @@
-"""
-Setup expectations for test sub classes
-Run discovery for as a prerequisite for most tests
-"""
 import os
 from datetime import datetime as dt
 from datetime import timedelta
