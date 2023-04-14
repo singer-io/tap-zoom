@@ -53,11 +53,10 @@ class ZoomClient(object):
 
     def refresh_access_token(self):
         if self.dev_mode:
-            try:
+            if self.config['access_token']:
                 self.__access_token = self.config['access_token']
                 return
-            except KeyError as ex:
-                raise Exception("Unable to locate access token in config") from ex
+            raise Exception("Unable to locate access token in config")
 
         data = self.request(
             'POST',
