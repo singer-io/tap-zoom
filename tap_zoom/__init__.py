@@ -13,7 +13,8 @@ from tap_zoom.sync import sync
 
 LOGGER = singer.get_logger()
 
-REQUIRED_CONFIG_KEYS = ['client_id', 'client_secret', 'refresh_token']
+REQUIRED_CONFIG_KEYS = [
+]
 
 def do_discover(client):
     LOGGER.info('Testing authentication')

@@ -73,9 +73,9 @@ class ZoomClient(object):
             timedelta(seconds=data['expires_in'] - 10) # pad by 10 seconds for clock drift
 
         update_config_keys = {
-                                "refresh_token":self.__refresh_token,
-                                "access_token":self.__access_token
-                            }
+            'refresh_token': self.__refresh_token,
+            'access_token': self.__access_token
+        }
         self.config = write_config(self.__config_path, update_config_keys)
 
     @backoff.on_exception(backoff.expo,
@@ -138,10 +138,9 @@ class ZoomClient(object):
             LOGGER.warn('Rate limit hit - 429')
             raise Server429Error(response.text)
 
-        if response.status_code != 200:
+        if response.status_code == 401:
             zoom_response = response.json()
-            zoom_response.update({'status': response.status_code})
-            raise Exception('Unable to authenticate (zoom response: `{}`)'.format(zoom_response))
+            raise Exception('Unable to authenticate because {}'.format(zoom_response['message']))
 
         response.raise_for_status()
 
