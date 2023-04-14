@@ -33,7 +33,7 @@ class ZoomClient(object):
         self.__access_token = None
         self.__use_jwt = False
         self.dev_mode = dev_mode
-        # This is to make sure a new access token gets generated on every extraction
+        # Setting dummy value for dev mode implementation
         self.__expires_at = now() - timedelta(seconds=10)
 
         jwt = config.get('jwt')
