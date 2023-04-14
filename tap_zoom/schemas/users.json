@@ -134,6 +134,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "properties": {

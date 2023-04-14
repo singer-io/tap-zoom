@@ -43,6 +43,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,

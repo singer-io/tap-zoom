@@ -92,6 +92,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,
@@ -124,6 +125,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,
