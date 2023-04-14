@@ -16,7 +16,7 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
 
 
     def streams_to_test(self):
-        # Skiiping meetings & it's child streams as it has huge amount of data which times out CircleCI
+        # Skipping meetings & it's child streams as it has huge amount of data which times out CircleCI
         return {'webinars', 'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
 
 
