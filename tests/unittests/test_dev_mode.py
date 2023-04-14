@@ -7,10 +7,10 @@ from unittest.mock import patch
 
 import pytz
 
-from tap_zoom.client import ZoomClient, strftime
+from tap_zoom.client import ZoomClient
 
 
-class Test_ClientDevMode(unittest.TestCase):
+class TestClientDevMode(unittest.TestCase):
     """Test the dev mode functionality."""
 
     tmpdir = tempfile.mkdtemp()
@@ -33,7 +33,7 @@ class Test_ClientDevMode(unittest.TestCase):
 
     @patch("tap_zoom.client.ZoomClient.request")
     def test_client_without_dev_mode(self, mocked_auth_post):
-        """checks if the client can write refresh token and expiry to config."""
+        """checks if the client can write refresh token to config."""
 
         with open(self.tmp_config_path, "w") as ff:
             json.dump(self.base_config, ff)
@@ -42,9 +42,9 @@ class Test_ClientDevMode(unittest.TestCase):
 
         client = ZoomClient(config_path=self.tmp_config_path, dev_mode=False, config=self.base_config)
         client.refresh_access_token()
+
         with open(self.tmp_config_path) as config_file:
             config = json.load(config_file)
-            self.assertEqual(True, "expires_in" in config)
             self.assertEqual(True, "access_token" in config)
             self.assertEqual(True, "refresh_token" in config)
 
@@ -54,44 +54,25 @@ class Test_ClientDevMode(unittest.TestCase):
         with open(self.tmp_config_path, "w") as config_file:
             json.dump(self.base_config, config_file)
 
-        try:
+        with self.assertRaises(Exception):
             client = ZoomClient(config_path=self.tmp_config_path, dev_mode=True, config=self.base_config)
-
             client.refresh_access_token()
-        except Exception as ex:
-            self.assertEqual(str(ex), "Unable to locate key in config")
 
     @patch("tap_zoom.client.ZoomClient.request")
     def test_client_valid_token(self, mocked_auth_post):
-        """checks if the client can fetch and validate refresh token and expiry
-        from config."""
+        """Verifies whether the __access_token attr has value from config in
+        dev_mode implementation."""
 
         config_sample = {
             "access_token": "token",
-            "expires_in": strftime(datetime.datetime.utcnow().replace(tzinfo=pytz.UTC) + datetime.timedelta(days=5)),
             **self.base_config,
         }
         with open(self.tmp_config_path, "w") as config_file:
             json.dump(config_sample, config_file)
+
         client = ZoomClient(config_path=self.tmp_config_path, dev_mode=True, config=config_sample)
         client.refresh_access_token()
-
-    @patch("tap_zoom.client.ZoomClient.request")
-    def test_client_invalid_token(self, mocked_auth_post):
-        """checks if the client can fetch and validate refresh token and expiry from config."""
-        expiry_time = strftime(datetime.datetime.utcnow().replace(tzinfo=pytz.UTC) - datetime.timedelta(minutes=5))
-        config_sample = {
-            "access_token": "token",
-            "expires_in": expiry_time,
-            **self.base_config,
-        }
-        with open(self.tmp_config_path, "w") as config_file:
-            json.dump(config_sample, config_file)
-        try:
-            client = ZoomClient(config_path=self.tmp_config_path, dev_mode=True, config=config_sample)
-            client.refresh_access_token()
-        except Exception as ex:
-            self.assertEqual(str(ex), "Access Token in config is expired, unable to authenticate in dev mode")
+        self.assertEqual("token", client._ZoomClient__access_token)
 
     def tearDown(self) -> None:
         try:

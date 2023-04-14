@@ -1,11 +1,11 @@
 import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import backoff
 import requests
 import singer
 from singer import metrics
-from singer.utils import strptime_to_utc, now, strftime
+from singer.utils import now
 from .utils import write_config
 from ratelimit import limits, RateLimitException
 from requests.exceptions import ConnectionError
@@ -33,7 +33,8 @@ class ZoomClient(object):
         self.__access_token = None
         self.__use_jwt = False
         self.dev_mode = dev_mode
-        self.__expires_at = None
+        # This is to make sure a new access token gets generated on every extraction
+        self.__expires_at = now() - timedelta(seconds=10)
 
         jwt = config.get('jwt')
         if jwt:
@@ -54,14 +55,9 @@ class ZoomClient(object):
         if self.dev_mode:
             try:
                 self.__access_token = self.config['access_token']
-                self.__expires_at = strptime_to_utc(self.config['expires_in'])
+                return
             except KeyError as ex:
-                raise Exception("Unable to locate key in config") from ex
-            if not self.__access_token or self.__expires_at < now():
-                raise Exception("Access Token in config is expired, unable to authenticate in dev mode")
-
-        if self.__access_token and self.__expires_at > now():
-            return
+                raise Exception("Unable to locate access token in config") from ex
 
         data = self.request(
             'POST',
@@ -77,13 +73,11 @@ class ZoomClient(object):
         self.__expires_at = now() + \
             timedelta(seconds=data['expires_in'] - 10) # pad by 10 seconds for clock drift
 
-        if not self.dev_mode:
-            update_config_keys = {
-                                    "refresh_token":self.__refresh_token,
-                                    "access_token":self.__access_token,
-                                    "expires_in": strftime(self.__expires_at)
-                                }
-            self.config = write_config(self.__config_path, update_config_keys)
+        update_config_keys = {
+                                "refresh_token":self.__refresh_token,
+                                "access_token":self.__access_token
+                            }
+        self.config = write_config(self.__config_path, update_config_keys)
 
     @backoff.on_exception(backoff.expo,
                           (Server5xxError, Server429Error, ConnectionError),

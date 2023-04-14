@@ -41,6 +41,3 @@ def main():
             sync(client,
                  parsed_args.catalog,
                  parsed_args.state)
-
-if __name__ == "__main__":
-    main()
