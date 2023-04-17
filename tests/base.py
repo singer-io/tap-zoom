@@ -14,13 +14,7 @@ class ZoomBase(BaseCase):
     A bunch of shared methods that are used in tap-tester tests.
     Shared tap-specific methods (as needed).
     """
-
-
-    REPLICATION_KEY_FORMAT = "%Y-%m-%dT00:00:00.000000Z"
-    BOOKMARK_FORMAT = "%Y-%m-%d"
     PAGE_SIZE = 100000
-    start_date = ""
-
 
     @staticmethod
     def tap_name():
@@ -183,39 +177,6 @@ class ZoomBase(BaseCase):
 
 
     @staticmethod
-    def expected_pagination_fields(): # TODO does this apply?
-        return {
-            "Test Report 1" : set(),
-            "Audience Overview": {
-                "ga:users", "ga:newUsers", "ga:sessions", "ga:sessionsPerUser", "ga:pageviews",
-                "ga:pageviewsPerSession", "ga:sessionDuration", "ga:bounceRate", "ga:date",
-                # "ga:pageviews",
-            },
-            "Audience Geo Location": set(),
-            "Audience Technology": set(),
-            "Acquisition Overview": set(),
-            "Behavior Overview": set(),
-            "Ecommerce Overview": set(),
-        }
-
-
-
-    # TODO refactor code to remove this method if possible, ga4 relic
-    def get_stream_name(self, stream):
-        """
-        Returns the stream_name given the tap_stream_id because synced_records
-        from the target output batches records by stream_name
-
-        Since the GA4 tap_stream_id is a UUID instead of the usual case of
-        tap_stream_id == stream_name, we need to get the stream_name that
-        maps to tap_stream_id
-        """
-        stream_name=stream
-        # custom_reports_names_to_ids().get(tap_stream_id, tap_stream_id)
-        return stream_name 
-
-
-    @staticmethod
     def select_all_streams_and_fields(conn_id, catalogs, select_all_fields: bool = True):
         """Select all streams and all fields within streams"""
         for catalog in catalogs:
@@ -285,21 +246,3 @@ class ZoomBase(BaseCase):
         bookmark_datetime = dt.strptime(bookmark, self.BOOKMARK_FORMAT)
         start_date_datetime = dt.strptime(self.start_date, self.START_DATE_FORMAT)
         return  min(bookmark_datetime, max(start_date_datetime, conversion_day))
-
-
-    # TODO is this still useful now that we have get_stream_name?
-    def get_record_count_by_stream(self, record_count, stream):
-        count = record_count.get(stream)
-        if not count:
-            stream_name = self.custom_reports_names_to_ids().get(stream)
-            return record_count.get(stream_name)
-        return count
-
-
-    def get_bookmark_value(self, state, stream):
-        bookmark = state.get('bookmarks', {})
-        stream_bookmark = bookmark.get(stream)
-        stream_replication_key = self.expected_metadata().get(stream,set()).get('REPLICATION_KEYS')
-        if stream_bookmark:
-            return stream_bookmark.get(stream_replication_key)
-        return None

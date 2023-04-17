@@ -24,17 +24,15 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
         """Test that records for each stream are not duplicated between pages"""
         for stream in self.streams_to_test():
             with self.subTest(stream=stream):
-                stream_name = self.get_stream_name(stream)
-
                 # gather expectations
-                expected_primary_keys = self.expected_primary_keys().get(stream_name)
+                expected_primary_keys = self.expected_primary_keys().get(stream)
 
                 # gather results
                 primary_keys_list = [tuple([message.get('data').get(expected_pk) for expected_pk in expected_primary_keys])
-                                     for message in self.get_upsert_messages_for_stream(self.synced_records, stream_name)]
+                                     for message in self.get_upsert_messages_for_stream(self.synced_records, stream)]
 
                 primary_keys_set = set(primary_keys_list)
                 if stream == 'webinars':
                     primary_keys_set = primary_keys_list
 
-                self.assertEqual(len(primary_keys_set), self.record_count_by_stream.get(stream_name))
+                self.assertEqual(len(primary_keys_set), self.record_count_by_stream.get(stream))

@@ -17,7 +17,6 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
         keys_to_remove = set()
         for stream in self.streams_to_test():
             with self.subTest(stream=stream):
-                stream_name = self.get_stream_name(stream)
                 if stream == 'webinars':
                     keys_to_remove = {'record_file_id', 'tracking_fields'}
                 elif stream == 'users':
@@ -26,11 +25,11 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
                     keys_to_remove = {'registration_count'}
 
                 # gather expectations
-                expected_all_keys = self.selected_fields.get(stream_name, set()) - keys_to_remove
+                expected_all_keys = self.selected_fields.get(stream, set()) - keys_to_remove
 
                 # gather results
                 actual_all_keys_per_record = [set(message['data'].keys()) for message in
-                                              self.get_upsert_messages_for_stream(self.synced_records, stream_name)]
+                                              self.get_upsert_messages_for_stream(self.synced_records, stream)]
 
                 actual_all_keys = set()
                 for record_keys in actual_all_keys_per_record:
