@@ -10,13 +10,15 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
         return "tt_zoom_all_fields_test"
 
     def streams_to_test(self):
-        # Skipping meetings & it's child streams as it has huge amount of data which times out CircleCI
+        # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI
         return {'webinars', 'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
     
+    # Overriding test_all_fields_for_streams_are_replicated() method from AllFieldsTest
     def test_all_fields_for_streams_are_replicated(self):
         keys_to_remove = set()
         for stream in self.streams_to_test():
             with self.subTest(stream=stream):
+                # Skipping fields as per the stream for which there is no data available
                 if stream == 'webinars':
                     keys_to_remove = {'record_file_id', 'tracking_fields'}
                 elif stream == 'users':
