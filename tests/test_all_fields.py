@@ -16,17 +16,17 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
     # Overriding test_all_fields_for_streams_are_replicated() method from AllFieldsTest
     def test_all_fields_for_streams_are_replicated(self):
         keys_to_remove = set()
+
+        # Skipping fields as per the stream for which there is no data available
+        MISSING_FIELDS = {
+            'users': {'plan_united_type', 'custom_attributes', 'im_group_ids'},
+            'webinars': {'record_file_id', 'tracking_fields'},
+            'webinar_tracking_sources': {'registration_count'}
+        }
         for stream in self.streams_to_test():
             with self.subTest(stream=stream):
-                # Skipping fields as per the stream for which there is no data available
-                MISSING_FIELDS = {
-                    'users': {'plan_united_type', 'custom_attributes', 'im_group_ids'},
-                    'webinars': {'record_file_id', 'tracking_fields'},
-                    'webinar_tracking_sources': {'registration_count'}
-                }
-
                 # gather expectations
-                expected_all_keys = self.selected_fields.get(stream, set()) - MISSING_FIELDS[stream]
+                expected_all_keys = self.selected_fields.get(stream, set()) - MISSING_FIELDS.get(stream, set())
 
                 # gather results
                 actual_all_keys_per_record = [set(message['data'].keys()) for message in
