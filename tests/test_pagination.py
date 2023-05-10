@@ -18,4 +18,5 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
     def streams_to_test(self):
         # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI
         # Added defect TDL-22941 for excluding 'webinars' stream for this test.
+        # Duplicate keys were observed in paginated results of test_no_duplicate_records() for 'webinars' stream.
         return {'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
