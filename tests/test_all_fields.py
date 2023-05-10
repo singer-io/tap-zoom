@@ -21,7 +21,7 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
                 # Skipping fields as per the stream for which there is no data available
                 MISSING_FIELDS = {
                     'users': {'plan_united_type', 'custom_attributes', 'im_group_ids'},
-                    'webnars': {'record_file_id', 'tracking_fields'},
+                    'webinars': {'record_file_id', 'tracking_fields'},
                     'webinar_tracking_sources': {'registration_count'}
                 }
 
