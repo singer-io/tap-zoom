@@ -19,15 +19,14 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
         for stream in self.streams_to_test():
             with self.subTest(stream=stream):
                 # Skipping fields as per the stream for which there is no data available
-                if stream == 'webinars':
-                    keys_to_remove = {'record_file_id', 'tracking_fields'}
-                elif stream == 'users':
-                    keys_to_remove = {'plan_united_type', 'custom_attributes', 'im_group_ids'}
-                elif stream == 'webinar_tracking_sources':
-                    keys_to_remove = {'registration_count'}
+                MISSING_FIELDS = {
+                    'users': {'plan_united_type', 'custom_attributes', 'im_group_ids'},
+                    'webnars': {'record_file_id', 'tracking_fields'},
+                    'webinar_tracking_sources': {'registration_count'}
+                }
 
                 # gather expectations
-                expected_all_keys = self.selected_fields.get(stream, set()) - keys_to_remove
+                expected_all_keys = self.selected_fields.get(stream, set()) - MISSING_FIELDS[stream]
 
                 # gather results
                 actual_all_keys_per_record = [set(message['data'].keys()) for message in
