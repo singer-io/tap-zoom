@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.3
+  * Dependabot update [#26](https://github.com/singer-io/tap-zoom/pull/26)
+
 ## 1.1.2
 - Increase wait time interval on RateLimitException [#25](https://github.com/singer-io/tap-zoom/pull/25)
 
