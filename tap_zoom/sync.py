@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import singer
 from singer import metrics, metadata, Transformer
@@ -48,7 +48,7 @@ def sync_recordings(client,
                                      stream_name,
                                      'endDate',
                                      client.start_date)
-    current_date = datetime.utcnow().date()
+    current_datetime = datetime.now(timezone.utc)
     if start_date:
         start_datetime = singer.utils.strptime_to_utc(start_date)
     else:
@@ -57,11 +57,11 @@ def sync_recordings(client,
         yesterday = current_date - timedelta(days=1)
         start_datetime = singer.utils.strptime_to_utc(yesterday.strftime(utc_format))
 
-    # Stop at midnight of the current UTC datetime in case there
-    # are additional recordings/meetings in progress.
-    max_datetime = singer.utils.strptime_to_utc(current_date.strftime(utc_format))
+    # Continue to sync any rows during the current date in case they 
+    # are still processing. The Zoom API only takes dates as parameters.
+    max_date = current_datetime.strftime(utc_format)
 
-    while start_datetime < max_datetime:
+    while start_datetime < current_datetime:
         next_datetime = start_datetime + timedelta(days=1)
         end_date = next_datetime.strftime(utc_format)
         params = {
@@ -78,7 +78,7 @@ def sync_recordings(client,
 
             # Note that the recordings endpoint can only fetch
             # up to 30 days of data at one time:
-            # https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/recordingsList
+            # https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/recordingsList
             sync_endpoint(client,
                          catalog,
                          state,
@@ -88,7 +88,8 @@ def sync_recordings(client,
                          endpoint,
                          curr_key_bag,
                          stream_params=params)
-
+        if next_datetime > current_datetime:
+            end_date = max_date
         singer.write_bookmark(state, stream_name, 'endDate', end_date)
         start_datetime = next_datetime
 
