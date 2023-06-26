@@ -200,6 +200,20 @@ def sync_endpoint(client,
                                                              mdata)
                         singer.write_record(stream_name, record_typed)
                         counter.increment()
+                    
+                    if stream_name == 'recordings':
+                        # Also write to a table called `url_to_recordings`
+                        # in order to map a share_url to the meeting_id.
+                        extra_stream = 'url_to_recordings'
+                        current_timestamp = datetime.now(timezone.utc)
+                        url_to_recording_map = {
+                            'id': record.get('id'),
+                            'share_url': record.get('share_url'),
+                            'uuid': record.get('uuid'),
+                            'meeting_id': record.get('meeting_id'),
+                            'timestamp': singer.utils.strftime(current_timestamp)
+                        }
+                        singer.write_record(extra_stream, url_to_recording_map)
 
                 sync_child_endpoints(client,
                                      catalog,
