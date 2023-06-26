@@ -220,9 +220,9 @@ def sync_endpoint(client,
                         extra_stream = 'url_to_recordings'
                         current_timestamp = datetime.now(timezone.utc)
                         url_to_recording_map = {
-                            'id': record.get('id'),
-                            'share_url': record.get('share_url'),
-                            'uuid': record.get('uuid'),
+                            'id': record['id'],
+                            'share_url': record['share_url'],
+                            'uuid': record['uuid'],
                             'timestamp': singer.utils.strftime(current_timestamp)
                         }
                         singer.write_record(extra_stream, url_to_recording_map)

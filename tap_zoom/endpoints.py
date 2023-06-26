@@ -155,7 +155,7 @@ ENDPOINTS_CONFIG = {
                 'paginate': True
             },
             'url_to_recordings': {
-                'pk': ['uuid', 'timestamp'],
+                'pk': ['uuid', 'share_url'],
                 'paginate': False
             }
         }
