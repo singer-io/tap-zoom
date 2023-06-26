@@ -43,15 +43,13 @@ def sync_recordings(client,
                     key_bag,
                     parent_endpoint=None,
                     records=[]):
-    persist = endpoint.get('persist', True)
-    if persist:
-        stream = catalog.get_stream(stream_name)
-        write_schema(stream)
+    stream = catalog.get_stream(stream_name)
+    write_schema(stream)
 
-        # Also write to a table called `url_to_recordings`
-        # in order to map a share_url to the meeting uuid.
-        dependant_stream = catalog.get_stream('url_to_recordings')
-        write_schema(dependant_stream)
+    # Also write to a table called `url_to_recordings`
+    # in order to map a share_url to the meeting uuid.
+    dependant_stream = catalog.get_stream('url_to_recordings')
+    write_schema(dependant_stream)
     
     utc_format = '%Y-%m-%d'
     start_date = singer.get_bookmark(state,
