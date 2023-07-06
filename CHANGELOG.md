@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+- Increase wait time interval on RateLimitException [#25](https://github.com/singer-io/tap-zoom/pull/25)
+
 ## 1.1.1
 - Update backoff logic for RateLimitException [#23](https://github.com/singer-io/tap-zoom/pull/23)
 - Update API doc links in README.md [#24](https://github.com/singer-io/tap-zoom/pull/24)

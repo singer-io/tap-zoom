@@ -78,7 +78,7 @@ class ZoomClient(object):
                           max_tries=8,
                           on_backoff=log_backoff_attempt,
                           jitter=None,
-                          interval=15)
+                          interval=30)
     @limits(calls=300, period=60)
     def request(self,
                 method,
