@@ -153,6 +153,10 @@ ENDPOINTS_CONFIG = {
                 'data_key': 'meetings',
                 'pk': ['uuid'],
                 'paginate': True
+            },
+            'url_to_recordings': {
+                'pk': ['uuid', 'share_url'],
+                'paginate': False
             }
         }
     }

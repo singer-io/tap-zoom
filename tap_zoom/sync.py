@@ -43,6 +43,14 @@ def sync_recordings(client,
                     key_bag,
                     parent_endpoint=None,
                     records=[]):
+    stream = catalog.get_stream(stream_name)
+    write_schema(stream)
+
+    # Also write to a table called `url_to_recordings`
+    # in order to map a share_url to the meeting uuid.
+    dependant_stream = catalog.get_stream('url_to_recordings')
+    write_schema(dependant_stream)
+    
     utc_format = '%Y-%m-%d'
     start_date = singer.get_bookmark(state,
                                      stream_name,
@@ -87,7 +95,8 @@ def sync_recordings(client,
                          stream_name,
                          endpoint,
                          curr_key_bag,
-                         stream_params=params)
+                         stream_params=params,
+                         should_write_schema=False)
         if next_datetime > current_datetime:
             end_date = max_date
         singer.write_bookmark(state, stream_name, 'endDate', end_date)
@@ -147,14 +156,18 @@ def sync_endpoint(client,
                   stream_name,
                   endpoint,
                   key_bag,
-                  stream_params={}):
+                  stream_params={},
+                  should_write_schema=True):
     persist = endpoint.get('persist', True)
-
     if persist:
         stream = catalog.get_stream(stream_name)
         schema = stream.schema.to_dict()
         mdata = metadata.to_map(stream.metadata)
-        write_schema(stream)
+        if should_write_schema:
+            # Child endpoints do not need to write the schema
+            # on every call to `sync_endpoints`, so we set
+            # should_write_schema=False for those cases.
+            write_schema(stream)
 
     path = endpoint['path'].format(**key_bag)
 
@@ -200,6 +213,17 @@ def sync_endpoint(client,
                                                              mdata)
                         singer.write_record(stream_name, record_typed)
                         counter.increment()
+                    
+                    if stream_name == 'recordings':
+                        extra_stream = 'url_to_recordings'
+                        current_timestamp = datetime.now(timezone.utc)
+                        url_to_recording_map = {
+                            'id': record['id'],
+                            'share_url': record['share_url'],
+                            'uuid': record['uuid'],
+                            'timestamp': singer.utils.strftime(current_timestamp)
+                        }
+                        singer.write_record(extra_stream, url_to_recording_map)
 
                 sync_child_endpoints(client,
                                      catalog,
@@ -224,6 +248,11 @@ def update_current_stream(state, stream_name=None):
 def get_required_streams(endpoints, selected_stream_names):
     required_streams = []
     for name, endpoint in endpoints.items():
+        if endpoint.get('path') is None:
+            # Skip any streams like `url_to_recordings` that don't
+            # map to a specific endpoint but provide additional metadata
+            # for Zoom data reports.
+            continue
         child_required_streams = None
         if 'children' in endpoint:
             child_required_streams = get_required_streams(endpoint['children'],
