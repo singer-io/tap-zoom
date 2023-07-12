@@ -5,15 +5,12 @@ from base import ZoomBase
 class ZoomPaginationTest(PaginationTest, ZoomBase):
     """Zoom pagination test implementation """
 
-
     @staticmethod
     def name():
         return "tt_zoom_pagination"
 
-
-    def get_page_limit_for_stream(self, stream):
-        return 10
-
+    def expected_page_size(self, stream):
+        return 3
 
     def streams_to_test(self):
         # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI

@@ -21,12 +21,10 @@ class ZoomBase(BaseCase):
         """The name of the tap"""
         return "tap-zoom"
 
-
     @staticmethod
     def get_type():
         """the expected url route ending"""
         return "platform.zoom"
-
 
     def get_properties(self, original: bool = True):
         """Configuration properties required for the tap."""
@@ -39,7 +37,6 @@ class ZoomBase(BaseCase):
 
         return return_value
 
-
     @staticmethod
     def get_credentials():
         return {
@@ -48,7 +45,7 @@ class ZoomBase(BaseCase):
             'refresh_token':os.getenv('TAP_ZOOM_REFRESH_TOKEN')
         }
 
-
+    @classmethod
     def expected_metadata(self):
         """The expected streams and metadata about the streams"""
 
@@ -150,14 +147,6 @@ class ZoomBase(BaseCase):
             },
         }
 
-    def expected_automatic_fields(self):
-        auto_fields = {}
-        for k, v in self.expected_metadata().items():
-            auto_fields[k] = v.get(self.PRIMARY_KEYS, set()) | v.get(self.REPLICATION_KEYS, set())
-
-        return auto_fields
-
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass(logging="Ensuring environment variables are sourced.")
@@ -175,7 +164,6 @@ class ZoomBase(BaseCase):
     ### Tap Specific Methods
     ##########################################################################
 
-
     @staticmethod
     def select_all_streams_and_fields(conn_id, catalogs, select_all_fields: bool = True):
         """Select all streams and all fields within streams"""
@@ -191,7 +179,6 @@ class ZoomBase(BaseCase):
             connections.select_catalog_and_fields_via_metadata(
                 conn_id, catalog, schema, [], non_selected_properties)
 
-
     def perform_and_verify_table_and_field_selection(self,
                                                      conn_id,
                                                      test_catalogs,
@@ -202,7 +189,6 @@ class ZoomBase(BaseCase):
         Verify this results in the expected streams selected and all or no
         fields selected for those streams.
         """
-
 
         # Select all available fields or select no fields from all testable streams
         self.select_all_streams_and_fields(
