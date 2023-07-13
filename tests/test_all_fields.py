@@ -29,10 +29,9 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
                 expected_all_keys = self.selected_fields.get(stream, set()) - MISSING_FIELDS.get(stream, set())
 
                 # gather results
-                actual_all_keys_per_record = [set(message['data'].keys()) for message in
-                                              self.get_upsert_messages_for_stream(self.synced_records, stream)]
+                fields_replicated = self.actual_fields.get(stream, set())
 
-                actual_all_keys = set()
-                for record_keys in actual_all_keys_per_record:
-                    actual_all_keys.update(record_keys)
-                self.assertSetEqual(expected_all_keys, actual_all_keys)
+                # verify that all fields are sent to the target
+                # test the combination of all records
+                self.assertSetEqual(fields_replicated, expected_all_keys,
+                                    logging=f"verify all fields are replicated for stream {stream}")
