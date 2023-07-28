@@ -10,7 +10,7 @@ class ZoomPaginationTest(PaginationTest, ZoomBase):
         return "tt_zoom_pagination"
 
     def expected_page_size(self, stream):
-        return 3
+        return 2
 
     def streams_to_test(self):
         # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI
