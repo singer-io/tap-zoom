@@ -49,18 +49,23 @@
         "string"
       ]
     },
-    "dept": {
+    "plan_united_type": {
       "type": [
         "null",
         "string"
       ]
     },
-    "created_at": {
+    "role_id": {
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
+    },
+    "dept": {
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "last_login_time": {
       "type": [
@@ -102,6 +107,57 @@
         "null",
         "integer"
       ]
+    },
+    "user_created_at": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "employee_unique_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "display_name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "custom_attributes": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "key": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "value": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
     }
   }
 }
