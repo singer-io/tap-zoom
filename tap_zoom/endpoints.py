@@ -32,13 +32,6 @@ ENDPOINTS_CONFIG = {
                                 'pk': ['meeting_uuid', 'email'],
                                 'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
-                            },
-                            'meeting_files': {
-                                'paginate': False,
-                                'path': 'past_meetings/{meeting_uuid}/files',
-                                'pk': ['meeting_uuid', 'file_name'],
-                                'forced-replication-method': 'FULL_TABLE',
-                                'data_key': 'in_meeting_files'
                             }
                         }
                     },
@@ -113,13 +106,6 @@ ENDPOINTS_CONFIG = {
                                 'pk': ['webinar_uuid', 'email'],
                                 'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
-                            },
-                            'webinar_files': {
-                                'paginate': False,
-                                'path': 'past_webinars/{webinar_uuid}/files',
-                                'pk': ['webinar_uuid', 'file_name'],
-                                'forced-replication-method': 'FULL_TABLE',
-                                'data_key': 'in_meeting_files'
                             }
                         }
                     },

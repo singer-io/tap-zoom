@@ -31,19 +31,12 @@ class ZoomClient(object):
         self.__config_path = config_path
         self.config = config
         self.__access_token = None
-        self.__use_jwt = False
         self.dev_mode = dev_mode
         # Setting dummy value for dev mode implementation
         self.__expires_at = now() - timedelta(seconds=10)
-
-        jwt = config.get('jwt')
-        if jwt:
-            self.__access_token = jwt
-            self.__use_jwt = True
-        else:
-            self.__client_id = config.get('client_id')
-            self.__client_secret = config.get('client_secret')
-            self.__refresh_token = config.get('refresh_token')
+        self.__client_id = config.get('client_id')
+        self.__client_secret = config.get('client_secret')
+        self.__refresh_token = config.get('refresh_token')
 
     def __enter__(self):
         return self
@@ -98,7 +91,6 @@ class ZoomClient(object):
                 ignore_http_error_codes=[],
                 **kwargs):
         if url is None and \
-            self.__use_jwt == False and \
             (self.__access_token is None or \
              self.__expires_at <= now()):
             self.refresh_access_token()
