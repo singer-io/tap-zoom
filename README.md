@@ -37,7 +37,7 @@ This tap:
 ### Authentication
 
 The Zoom tap supports two methods of authentication:
-- JWT - A JWT token that can be [generated in the Zoom UI](https://marketplace.zoom.us/docs/guides/auth/jwt). This is probably the easiest option for tap users self-hosting.
+- JWT - A JWT token that can be [generated in the Zoom UI](https://marketplace.zoom.us/docs/guides/auth/jwt). This is probably the easiest option for tap users self-hosting. This is deprecating on 1st June 2023 [Ref link](https://developers.zoom.us/docs/platform/auth/jwt/). Hence, removing the jwt support from the code.
 - OAuth 2.0 - [Zoom OAuth](https://marketplace.zoom.us/docs/guides/auth/oauth) using a refresh token.
 
 #### OAuth Scopes
@@ -50,14 +50,6 @@ The following OAuth scopes are required:
 - report:read:admin
 
 ### Config File
-
-#### Using JWT
-
-```json
-  {
-      "jwt": <JWT>
-  }
-  ```
 
 #### Using OAuth
 
