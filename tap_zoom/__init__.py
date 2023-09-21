@@ -13,8 +13,7 @@ from tap_zoom.sync import sync
 
 LOGGER = singer.get_logger()
 
-REQUIRED_CONFIG_KEYS = [
-]
+REQUIRED_CONFIG_KEYS = ['client_id', 'client_secret', 'refresh_token']
 
 def do_discover(client):
     LOGGER.info('Testing authentication')
@@ -32,7 +31,10 @@ def do_discover(client):
 def main():
     parsed_args = singer.utils.parse_args(REQUIRED_CONFIG_KEYS)
 
-    with ZoomClient(parsed_args.config, parsed_args.config_path) as client:
+    if parsed_args.dev:
+        LOGGER.warning("Executing Tap in Dev mode")
+        
+    with ZoomClient(parsed_args.config, parsed_args.config_path, parsed_args.dev) as client:
         if parsed_args.discover:
             do_discover(client)
         else:

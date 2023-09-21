@@ -9,10 +9,22 @@
     },
     "id": {
       "type": [
+        "integer"
+      ]
+    },
+    "host_email": {
+      "type": [
+        "null",
         "string"
       ]
     },
     "host_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "password": {
       "type": [
         "null",
         "string"
@@ -28,6 +40,18 @@
       "type": [
         "null",
         "integer"
+      ]
+    },
+    "is_simulive": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "record_file_id": {
+      "type": [
+        "null",
+        "string"
       ]
     },
     "start_time": {
@@ -81,6 +105,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,
@@ -100,18 +125,19 @@
         }
       }
     },
-    "occurences": {
+    "occurrences": {
       "type": [
         "null",
         "array"
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,
         "properties": {
-          "occurence_id": {
+          "occurrence_id": {
             "type": [
               "null",
               "string"
@@ -170,11 +196,179 @@
             "boolean"
           ]
         },
+        "hd_video_for_attendees": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "question_and_answer": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "allow_anonymous_questions": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "answer_questions": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "attendees_can_comment": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "attendees_can_upvote": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "allow_auto_reply": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "auto_reply_text": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            }
+          }
+        },
         "approval_type": {
           "type": [
             "null",
             "integer"
           ]
+        },
+        "panelist_authentication": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "language_interpretation": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "interpreters": {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": [
+                  "null",
+                  "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "email": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  },
+                  "languages": {
+                    "type": [
+                      "null",
+                      "string"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "attendees_and_panelists_reminder_email_notification": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "type": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            }
+          }
+        },
+        "follow_up_absentees_email_notification": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "type": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            }
+          }
+        },
+        "follow_up_attendees_email_notification": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "type": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            }
+          }
         },
         "registration_type": {
           "type": [
@@ -182,7 +376,19 @@
             "integer"
           ]
         },
+        "send_1080p_video_to_attendees": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "audio": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "audio_conference_info": {
           "type": [
             "null",
             "string"
@@ -194,25 +400,13 @@
             "string"
           ]
         },
-        "enforce_login": {
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
-        "enforce_login_domains": {
-          "type": [
-            "null",
-            "string"
-          ]
-        },
         "alternative_hosts": {
           "type": [
             "null",
             "string"
           ]
         },
-        "close_registration": {
+        "alternative_host_update_polls": {
           "type": [
             "null",
             "boolean"
@@ -236,6 +430,12 @@
             "boolean"
           ]
         },
+        "panelists_invitation_email_notification": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "global_dial_in_countries": {
           "type": [
             "null",
@@ -250,13 +450,19 @@
         "contact_name": {
           "type": [
             "null",
-            "boolean"
+            "string"
           ]
         },
         "contact_email": {
           "type": [
             "null",
-            "boolean"
+            "string"
+          ]
+        },
+        "email_language": {
+          "type": [
+            "null",
+            "string"
           ]
         },
         "registrants_confirmation_email": {
@@ -301,13 +507,37 @@
             "boolean"
           ]
         },
+        "add_watermark": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "add_audio_watermark": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "authentication_option": {
           "type": [
             "null",
             "string"
           ]
         },
+        "enable_session_branding": {
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "authentication_domains": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "authentication_name": {
           "type": [
             "null",
             "string"
@@ -337,7 +567,7 @@
         "weekly_days": {
           "type": [
             "null",
-            "integer"
+            "string"
           ]
         },
         "monthly_day": {

@@ -46,6 +46,36 @@
     "duration": {
       "type": [
         "null",
+        "integer"
+      ]
+    },
+    "failover": {
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    "customer_key": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "registrant_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "status": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "bo_mtg_id": {
+      "type": [
+        "null",
         "string"
       ]
     }
