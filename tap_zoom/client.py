@@ -32,6 +32,15 @@ class ZoomClient(object):
         self.__use_jwt = False
         self.__expires_at = None
         self.start_date = config.get('start_date')
+        """
+            Add the `sync_today` flag if you want to also ingest data as it's coming
+            in for the current day. 
+            
+            NOTE: Since the Zoom API only takes dates (instead of timestamps) for the 
+            date ranges when requesting recordings, the share_url for today is not stable. Therefore make sure to also use the url_to_recordings
+            to map share_url to a stable uuid: https://github.com/Pathlight/tap-zoom/pull/5
+        """
+        self.sync_today = config.get('sync_today', False)
 
         jwt = config.get('jwt')
         refresh_token = config.get('refresh_token')

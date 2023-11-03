@@ -68,8 +68,13 @@ def sync_recordings(client,
     # Continue to sync any rows during the current date in case they 
     # are still processing. The Zoom API only takes dates as parameters.
     max_date = current_datetime.strftime(utc_format)
+    max_datetime = current_datetime
+    if not client.sync_today:
+        # Stop at midnight of the current UTC datetime in case there
+        # are additional recordings/meetings in progress.    
+        max_datetime = singer.utils.strptime_to_utc(max_date)
 
-    while start_datetime < current_datetime:
+    while start_datetime < max_datetime:
         next_datetime = start_datetime + timedelta(days=1)
         end_date = next_datetime.strftime(utc_format)
         params = {
@@ -97,7 +102,7 @@ def sync_recordings(client,
                          curr_key_bag,
                          stream_params=params,
                          should_write_schema=False)
-        if next_datetime > current_datetime:
+        if next_datetime > max_datetime:
             end_date = max_date
         singer.write_bookmark(state, stream_name, 'endDate', end_date)
         start_datetime = next_datetime
