@@ -37,8 +37,7 @@ class ZoomClient(object):
             in for the current day. 
             
             NOTE: Since the Zoom API only takes dates (instead of timestamps) for the 
-            date ranges when requesting recordings, the share_url for the current 
-            dates are not stable. Therefore make sure to also use the url_to_recordings
+            date ranges when requesting recordings, the share_url for today is not stable. Therefore make sure to also use the url_to_recordings
             to map share_url to a stable uuid: https://github.com/Pathlight/tap-zoom/pull/5
         """
         self.sync_today = config.get('sync_today', False)
