@@ -42,7 +42,7 @@
         "string"
       ]
     },
-    "county": {
+    "country": {
       "type": [
         "null",
         "string"
@@ -115,6 +115,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,

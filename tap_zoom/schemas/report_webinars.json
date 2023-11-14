@@ -92,6 +92,7 @@
       ],
       "items": {
         "type": [
+          "null",
           "object"
         ],
         "additionalProperties": false,
@@ -116,6 +117,33 @@
         "null",
         "string"
       ]
+    },
+    "custom_keys": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "value": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
     }
   }
 }

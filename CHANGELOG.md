@@ -1,7 +1,12 @@
 # Changelog
 
-## 1.1.3
+## 2.0.1
   * Dependabot update [#26](https://github.com/singer-io/tap-zoom/pull/26)
+
+## 2.0.0
+- Removed dependency of jwt from tap logic [#20](https://github.com/singer-io/tap-zoom/pull/20)
+- Added dev mode support [#19](https://github.com/singer-io/tap-zoom/pull/19)
+- Remove deprecated streams and schema changes & integration tests [#18](https://github.com/singer-io/tap-zoom/pull/18)
 
 ## 1.1.2
 - Increase wait time interval on RateLimitException [#25](https://github.com/singer-io/tap-zoom/pull/25)
