@@ -83,7 +83,7 @@ ENDPOINTS_CONFIG = {
                         'pk': ['uuid'],
                         'forced-replication-method': 'FULL_TABLE',
                         'provides': {
-                            'webinar_uuid': 'uuid'
+                            'webinar_uuid': 'id'
                         },
                         'children': {
                             'webinar_absentees': {
