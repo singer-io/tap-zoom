@@ -121,3 +121,5 @@ singer-check-tap-data
 state.json
 catalog.json
 
+archive/phone_recordings.json
+config_hcp.json
