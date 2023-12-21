@@ -32,7 +32,7 @@ def update_key_bag_for_child(key_bag, parent_endpoint, record):
 
     return updated_key_bag
 
-
+# This method is called for both Zoom Cloud Recordings and Zoom Phone Recordings
 def sync_recordings(client,
                     catalog,
                     state,
@@ -47,9 +47,10 @@ def sync_recordings(client,
     write_schema(stream)
 
     # Also write to a table called `url_to_recordings`
-    # in order to map a share_url to the meeting uuid.
-    dependant_stream = catalog.get_stream('url_to_recordings')
-    write_schema(dependant_stream)
+    # in order to map a share_url to the meeting uuid for Zoom Cloud Recordings
+    if stream_name == 'recordings':
+        dependant_stream = catalog.get_stream('url_to_recordings')
+        write_schema(dependant_stream)
     
     utc_format = '%Y-%m-%d'
     start_date = singer.get_bookmark(state,
@@ -62,7 +63,7 @@ def sync_recordings(client,
     else:
         # If no start_date or bookmark available, default to
         # ingesting yesterday's data.
-        yesterday = current_date - timedelta(days=1)
+        yesterday = current_datetime - timedelta(days=1)
         start_datetime = singer.utils.strptime_to_utc(yesterday.strftime(utc_format))
 
     # Continue to sync any rows during the current date in case they 
@@ -125,8 +126,8 @@ def sync_child_endpoints(client,
             continue
 
         update_current_stream(state, child_stream_name)
-        if child_stream_name == 'recordings':
-            # Special-handling for recordings bookmarks
+        if child_stream_name == 'recordings' or child_stream_name == 'phone_call_logs':
+            # Special-handling for cloud and phone recordings bookmarks
             sync_recordings(client,
                             catalog,
                             state,
@@ -202,7 +203,14 @@ def sync_endpoint(client,
 
         if data is None:
             return
-
+        
+        # Skip parsing records, if an API call returns 0 'total_records'  
+        if 'record_count_key' in endpoint:
+            record_count = records = data[endpoint['record_count_key']]
+            
+            if record_count == 0:
+                return
+   
         if 'data_key' in endpoint:
             records = data[endpoint['data_key']]
         else:
@@ -211,6 +219,15 @@ def sync_endpoint(client,
         with metrics.record_counter(stream_name) as counter:
             with Transformer() as transformer:
                 for record in records:
+                    
+                    # Only parse phone_call_log records if a recording exists
+                    # result field of the phone_call_log is 'Auto Recorded' for recorded calls
+                    if 'recording_key' in endpoint:
+                        result = record[endpoint['recording_key']]
+                        
+                        if result!='Auto Recorded':
+                            continue
+                    
                     if persist and stream_name in selected_streams:
                         record = {**record, **key_bag}
                         record_typed = transformer.transform(record,

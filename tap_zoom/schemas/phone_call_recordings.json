@@ -1,0 +1,130 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": "string"
+        },
+        "caller_number": {
+            "type": "string"
+        },
+        "caller_number_type": {
+            "type": "integer"
+        },
+        "caller_name": {
+            "type": "string"
+        },
+        "callee_number": {
+            "type": "string",
+            "format": "integer"
+        },
+        "callee_number_type": {
+            "type": "integer"
+        },
+        "callee_name": {
+            "type": "string"
+        },
+        "direction": {
+            "type": "string"
+        },
+        "duration": {
+            "type": "integer"
+        },
+        "download_url": {
+            "type": "string",
+            "format": "uri",
+            "qt-uri-protocols": [
+                "https"
+            ]
+        },
+        "file_url": {
+            "type": "string",
+            "format": "uri",
+            "qt-uri-protocols": [
+                "https"
+            ]
+        },
+        "date_time": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "recording_type": {
+            "type": "string"
+        },
+        "call_log_id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "call_id": {
+            "type": "string"
+        },
+        "owner" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties":{
+                "extension_number": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "extension_status": {
+                    "type": "string"
+                },
+                "extension_deleted_time": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "site": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+                }
+        },
+        "end_time": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "disclaimer_status": {
+            "type": "integer"
+        },
+        "outgoing_by" :{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "extension_number": {
+                    "type": "string"
+                }
+            }
+          },
+          "accepted_by" :{
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "extension_number": {
+                    "type": "string"
+                }
+            }
+          }
+    }
+}

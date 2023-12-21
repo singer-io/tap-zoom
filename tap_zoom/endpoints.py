@@ -151,9 +151,28 @@ ENDPOINTS_CONFIG = {
             'recordings': {
                 'path': 'users/{user_id}/recordings',
                 'data_key': 'meetings',
+                'record_count_key': 'total_records',
                 'pk': ['uuid'],
                 'paginate': True
             },
+            'phone_call_logs': {
+                'path': 'phone/users/{user_id}/call_logs',
+                'data_key': 'call_logs',
+                'record_count_key': 'total_records',
+                'recording_key': 'result',
+                'pk': ['id'],
+                'paginate': True,
+                'provides': {
+                    'call_id': 'id'
+                },
+                'children': {
+                    'phone_call_recordings': {
+                        'paginate': False,
+                        'path': 'phone/call_logs/{call_id}/recordings',
+                        'pk': ['id']
+                    }
+                }
+            },   
             'url_to_recordings': {
                 'pk': ['uuid', 'share_url'],
                 'paginate': False

@@ -1,0 +1,94 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+          "type": "string",
+          "format": "uuid"
+      },
+      "call_type": {
+          "type": "string"
+      },
+      "caller_number": {
+          "type": "string"
+      },
+      "caller_number_type": {
+          "type": "integer"
+      },
+      "caller_number_source": {
+          "type": "string"
+      },
+      "caller_name": {
+          "type": "string"
+      },
+      "callee_number": {
+          "type": "string",
+          "format": "integer"
+      },
+      "callee_number_type": {
+          "type": "integer"
+      },
+      "callee_name": {
+          "type": "string"
+      },
+      "direction": {
+          "type": "string"
+      },
+      "duration": {
+          "type": "integer"
+      },
+      "result": {
+          "type": "string"
+      },
+      "date_time": {
+          "type": "string",
+          "format": "date-time"
+      },
+      "recording_id": {
+          "type": "string"
+      },
+      "recording_type": {
+          "type": "string"
+      },
+      "has_recording": {
+        "type": "boolean"
+     },
+      "has_voicemail": {
+          "type": "boolean"
+      },
+      "call_id": {
+          "type": "string"
+      },
+      "caller_country_code": {
+          "type": "string",
+          "format": "integer"
+      },
+      "caller_country_iso_code": {
+          "type": "string"
+      },
+      "callee_did_number": {
+          "type": "string"
+      },
+      "callee_country_code": {
+          "type": "string",
+          "format": "integer"
+      },
+      "callee_country_iso_code": {
+          "type": "string"
+      },
+      "answer_start_time": {
+          "type": "string",
+          "format": "date-time"
+      },
+      "call_end_time": {
+          "type": "string",
+          "format": "date-time"
+      },
+      "department": {
+          "type": "string"
+      },
+      "cost_center": {
+          "type": "string"
+      }
+  }
+  }
