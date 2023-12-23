@@ -56,7 +56,7 @@
             "format": "uuid"
         },
         "call_id": {
-            "type": "integer"
+            "type": "string"
         },
         "owner" : {
             "type": "object",

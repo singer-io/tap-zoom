@@ -57,7 +57,7 @@
           "type": "boolean"
       },
       "call_id": {
-          "type": "integer"
+          "type": "string"
       },
       "caller_country_code": {
           "type": "string",
@@ -89,6 +89,9 @@
       },
       "cost_center": {
           "type": "string"
-      }
+      },
+      "owner_id": {
+        "type": "string"
+    }
   }
   }

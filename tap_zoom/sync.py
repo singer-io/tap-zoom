@@ -222,9 +222,15 @@ def sync_endpoint(client,
                         record_typed = transformer.transform(record,
                                                              schema,
                                                              mdata)
+                        
+                    # Map userID, if ownerID maps to a Channel like 'Support'
+                    if stream_name == 'phone_call_logs':
+                        split_path = path.split('/')
+                        record_typed['owner_id'] = split_path[2]
+                        
                         singer.write_record(stream_name, record_typed)
                         counter.increment()
-                    
+                
                     if stream_name == 'recordings':
                         extra_stream = 'url_to_recordings'
                         current_timestamp = datetime.now(timezone.utc)
