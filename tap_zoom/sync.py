@@ -10,11 +10,9 @@ from tap_zoom.endpoints import ENDPOINTS_CONFIG
 
 LOGGER = singer.get_logger()
 
-
 def write_schema(stream):
     schema = stream.schema.to_dict()
     singer.write_schema(stream.tap_stream_id, schema, stream.key_properties)
-
 
 def update_key_bag_for_child(key_bag, parent_endpoint, record):
     # Constructs the properties needed to build the nested
@@ -200,7 +198,7 @@ def sync_endpoint(client,
                           endpoint=stream_name,
                           ignore_zoom_error_codes=endpoint.get('ignore_zoom_error_codes', []),
                           ignore_http_error_codes=endpoint.get('ignore_http_error_codes', []))
-
+                
         if data is None:
             return
         
@@ -219,15 +217,6 @@ def sync_endpoint(client,
         with metrics.record_counter(stream_name) as counter:
             with Transformer() as transformer:
                 for record in records:
-                    
-                    # Only parse phone_call_log records if a recording exists
-                    # result field of the phone_call_log is 'Auto Recorded' for recorded calls
-                    if 'recording_key' in endpoint:
-                        result = record[endpoint['recording_key']]
-                        
-                        if result!='Auto Recorded':
-                            continue
-                    
                     if persist and stream_name in selected_streams:
                         record = {**record, **key_bag}
                         record_typed = transformer.transform(record,

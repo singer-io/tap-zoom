@@ -159,11 +159,10 @@ ENDPOINTS_CONFIG = {
                 'path': 'phone/users/{user_id}/call_logs',
                 'data_key': 'call_logs',
                 'record_count_key': 'total_records',
-                'recording_key': 'result',
                 'pk': ['id'],
                 'paginate': True,
                 'provides': {
-                    'call_id': 'id'
+                    'call_id': 'call_id'
                 },
                 'children': {
                     'phone_call_recordings': {
