@@ -106,6 +106,18 @@ ENDPOINTS_CONFIG = {
                                 'pk': ['webinar_uuid', 'email'],
                                 'forced-replication-method': 'FULL_TABLE',
                                 'data_key': 'questions'
+                            },
+                            'report_webinars': {
+                                'paginate': False,
+                                'path': 'report/webinars/{webinar_uuid}',
+                                'pk': ['uuid'],
+                                'forced-replication-method': 'FULL_TABLE',
+                            },
+                            'report_webinar_participants': {
+                                'path': 'report/webinars/{webinar_uuid}/participants',
+                                'pk': ['webinar_id', 'id'],
+                                'forced-replication-method': 'FULL_TABLE',
+                                'data_key': 'participants'
                             }
                         }
                     },
@@ -139,18 +151,6 @@ ENDPOINTS_CONFIG = {
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'tracking_sources'
-                    },
-                    'report_webinars': {
-                        'paginate': False,
-                        'path': 'report/webinars/{webinar_uuid}',
-                        'pk': ['uuid'],
-                        'forced-replication-method': 'FULL_TABLE',
-                    },
-                    'report_webinar_participants': {
-                        'path': 'report/webinars/{webinar_uuid}/participants',
-                        'pk': ['webinar_id', 'id'],
-                        'forced-replication-method': 'FULL_TABLE',
-                        'data_key': 'participants'
                     }
                 }
             }
