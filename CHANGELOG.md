@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.0.2
-  * Pull webinars by UUID [#32](https://github.com/singer-io/tap-zoom/pull/32)
+  * Pull report_webinars and report_webinar_participants by UUID [#32](https://github.com/singer-io/tap-zoom/pull/32)
 
 ## 2.0.1
   * Dependabot update [#26](https://github.com/singer-io/tap-zoom/pull/26)
