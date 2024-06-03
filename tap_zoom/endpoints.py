@@ -147,7 +147,7 @@ ENDPOINTS_CONFIG = {
                         'forced-replication-method': 'FULL_TABLE',
                     },
                     'report_webinar_participants': {
-                        'path': 'report/webinars/{webinar_id}/participants',
+                        'path': 'report/webinars/{webinar_uuid}/participants',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'participants'
