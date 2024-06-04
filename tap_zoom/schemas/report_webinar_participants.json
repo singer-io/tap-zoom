@@ -72,6 +72,18 @@
         "null",
         "string"
       ]
+    },
+    "bo_mtg_id": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "participant_user_id": {
+      "type": [
+        "null",
+        "string"
+      ]
     }
   }
 }
