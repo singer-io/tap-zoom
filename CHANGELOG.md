@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+  * Remove ratelimit dependency [#33](https://github.com/singer-io/tap-zoom/pull/33)
+
 ## 2.0.1
   * Dependabot update [#26](https://github.com/singer-io/tap-zoom/pull/26)
 
