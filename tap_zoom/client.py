@@ -7,7 +7,6 @@ import singer
 from singer import metrics
 from singer.utils import now
 from .utils import write_config
-from ratelimit import limits, RateLimitException
 from requests.exceptions import ConnectionError
 
 LOGGER = singer.get_logger()
@@ -76,13 +75,7 @@ class ZoomClient(object):
                           max_tries=8,
                           on_backoff=log_backoff_attempt,
                           factor=3)
-    @backoff.on_exception(backoff.constant,
-                          RateLimitException,
-                          max_tries=8,
-                          on_backoff=log_backoff_attempt,
-                          jitter=None,
-                          interval=30)
-    @limits(calls=300, period=60)
+
     def request(self,
                 method,
                 path=None,

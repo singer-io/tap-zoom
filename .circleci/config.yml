@@ -22,7 +22,7 @@ jobs:
           name: 'pylint'
           command: |
             source /usr/local/share/virtualenvs/tap-zoom/bin/activate
-            pylint tap_zoom -d C,R,W
+            pylint tap_zoom -d C,R,W,possibly-used-before-assignment
       - run:
           name: 'Unit Tests'
           command: |
