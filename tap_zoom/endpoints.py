@@ -1,4 +1,3 @@
-
 ENDPOINTS_CONFIG = {
     'users': {
         'path': 'users',
@@ -151,6 +150,13 @@ ENDPOINTS_CONFIG = {
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'participants'
+                    },
+                    'report_webinar_survey': {
+                        'paginate': False,
+                        'path': 'report/webinars/{webinar_id}/survey',
+                        'pk': ['webinar_id'],
+                        'forced-replication-method': 'FULL_TABLE',
+                        'ignore_http_error_codes': [404]
                     }
                 }
             }

@@ -1,0 +1,124 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "webinar_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "uuid": {
+      "type": [
+        "string"
+      ]
+    },
+    "id": {
+      "type": [
+        "integer"
+      ]
+    },
+    "survey_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "survey_name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "survey_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "questions": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "question_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "question_type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "answers": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "answer": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "answer_id": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "total_responses": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "start_time": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "date-time"
+    }
+  }
+}

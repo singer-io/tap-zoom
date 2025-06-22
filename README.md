@@ -27,6 +27,7 @@ This tap:
   - [report_meeting_participants](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/reportMeetingParticipants)
   - [report_webinars](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/reportWebinarDetails)
   - [report_webinar_participants](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/reportWebinarParticipants)
+  - [report_webinar_survey](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/reportWebinarSurvey)
 - Outputs the schema for each resource
 
 ### Data Replication

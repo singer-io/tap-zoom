@@ -145,6 +145,11 @@ class ZoomBase(BaseCase):
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
             },
+            'report_webinar_survey': {
+                self.PRIMARY_KEYS: {"webinar_id"},
+                self.REPLICATION_METHOD: self.FULL_TABLE,
+                self.RESPECTS_START_DATE: False,
+            },
         }
 
     @classmethod

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.3
+  * Added support for report_webinar_survey endpoint [#34](https://github.com/singer-io/tap-zoom/pull/34)
+
 ## 2.0.2
   * Remove ratelimit dependency [#33](https://github.com/singer-io/tap-zoom/pull/33)
 
