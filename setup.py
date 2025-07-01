@@ -10,8 +10,8 @@ setup(name='tap-zoom',
       install_requires=[
         'backoff==1.8.0',
         'ratelimit==2.2.1',
-        'requests==2.31.0',
-        'singer-python==5.13.0'
+        'requests==2.32.4',
+        'singer-python==5.13.2'
       ],
       entry_points='''
           [console_scripts]
