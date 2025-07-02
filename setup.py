@@ -8,7 +8,7 @@ setup(name='tap-zoom',
       classifiers=['Programming Language :: Python :: 3 :: Only'],
       py_modules=['tap_zoom'],
       install_requires=[
-        'backoff==1.8.0',
+        'backoff==1.10.0',
         'ratelimit==2.2.1',
         'requests==2.32.4',
         'singer-python==5.13.2'
