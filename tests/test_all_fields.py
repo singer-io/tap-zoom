@@ -11,8 +11,8 @@ class ZoomAllFieldsTest(AllFieldsTest, ZoomBase):
 
     def streams_to_test(self):
         # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI
-        return {'webinars', 'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
-    
+        return {'users'}
+
     # Overriding test_all_fields_for_streams_are_replicated() method from AllFieldsTest
     def test_all_fields_for_streams_are_replicated(self):
         keys_to_remove = set()

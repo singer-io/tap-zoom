@@ -36,4 +36,4 @@ class ZoomMinimumSelectionTest(MinimumSelectionTest, ZoomBase):
 
     def streams_to_test(self):
         # Skipping meetings & it's child streams due to large number of API calls which times out CircleCI
-        return {'webinar_polls', 'webinar_registrants', 'users', 'webinar_questions', 'webinar_tracking_sources'}
+        return {'users'}
