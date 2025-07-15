@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3
+  * Update dependency versions for twistlock compliance
+  * Adjust tests to pass in circle
+  * [#36](https://github.com/singer-io/tap-zoom/pull/36)
+
 ## 2.0.2
   * Remove ratelimit dependency [#33](https://github.com/singer-io/tap-zoom/pull/33)
 
