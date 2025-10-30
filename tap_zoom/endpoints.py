@@ -10,6 +10,7 @@ ENDPOINTS_CONFIG = {
         },
         'children': {
             'list_meetings': {
+                'parent': 'users',
                 'persist': False,
                 'path': 'users/{user_id}/meetings',
                 'data_key': 'meetings',
@@ -18,6 +19,7 @@ ENDPOINTS_CONFIG = {
                 },
                 'children': {
                     'meetings': {
+                        'parent': 'list_meetings',
                         'paginate': False,
                         'path': 'meetings/{meeting_id}',
                         'pk': ['uuid'],
@@ -27,6 +29,7 @@ ENDPOINTS_CONFIG = {
                         },
                         'children': {
                             'meeting_poll_results': {
+                                'parent': 'meetings',
                                 'paginate': False,
                                 'path': 'past_meetings/{meeting_uuid}/polls',
                                 'pk': ['meeting_uuid', 'email'],
@@ -36,18 +39,21 @@ ENDPOINTS_CONFIG = {
                         }
                     },
                     'meeting_registrants': {
+                        'parent': 'list_meetings',
                         'path': 'meetings/{meeting_id}/registrants',
                         'pk': ['meeting_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'registrants'
                     },
                     'meeting_polls': {
+                        'parent': 'list_meetings',
                         'path': 'meetings/{meeting_id}/polls',
                         'pk': ['meeting_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'polls'
                     },
                     'meeting_questions': {
+                        'parent': 'list_meetings',
                         'paginate': False,
                         'path': 'meetings/{meeting_id}/registrants/questions',
                         'pk': ['meeting_id'],
@@ -55,12 +61,14 @@ ENDPOINTS_CONFIG = {
                         'ignore_zoom_error_codes': [3000]
                     },
                     'report_meetings': {
+                        'parent': 'list_meetings',
                         'paginate': False,
                         'path': 'report/meetings/{meeting_id}',
                         'pk': ['uuid'],
                         'forced-replication-method': 'FULL_TABLE'
                     },
                     'report_meeting_participants': {
+                        'parent': 'list_meetings',
                         'path': 'report/meetings/{meeting_id}/participants',
                         'pk': ['meeting_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
@@ -69,6 +77,7 @@ ENDPOINTS_CONFIG = {
                 }
             },
             'list_webinars': {
+                'parent': 'users',
                 'persist': False,
                 'path': 'users/{user_id}/webinars',
                 'data_key': 'webinars',
@@ -78,6 +87,7 @@ ENDPOINTS_CONFIG = {
                 },
                 'children': {
                     'webinars': {
+                        'parent': 'list_webinars',
                         'paginate': False,
                         'path': 'webinars/{webinar_id}',
                         'pk': ['uuid'],
@@ -87,6 +97,7 @@ ENDPOINTS_CONFIG = {
                         },
                         'children': {
                             'webinar_absentees': {
+                                'parent': 'webinars',
                                 'path': 'past_webinars/{webinar_uuid}/absentees',
                                 'pk': ['webinar_uuid', 'id'],
                                 'forced-replication-method': 'FULL_TABLE',
@@ -94,6 +105,7 @@ ENDPOINTS_CONFIG = {
                                 'ignore_http_error_codes': [404]
                             },
                             'webinar_poll_results': {
+                                'parent': 'webinars',
                                 'paginate': False,
                                 'path': 'past_webinars/{webinar_uuid}/polls',
                                 'pk': ['webinar_uuid', 'email'],
@@ -101,6 +113,7 @@ ENDPOINTS_CONFIG = {
                                 'data_key': 'questions'
                             },
                             'webinar_qna_results': {
+                                'parent': 'webinars',
                                 'paginate': False,
                                 'path': 'past_webinars/{webinar_uuid}/qa',
                                 'pk': ['webinar_uuid', 'email'],
@@ -110,24 +123,28 @@ ENDPOINTS_CONFIG = {
                         }
                     },
                     'webinar_panelists': {
+                        'parent': 'list_webinars',
                         'path': 'webinars/{webinar_id}/panelists',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'panelists'
                     },
                     'webinar_registrants': {
+                        'parent': 'list_webinars',
                         'path': 'webinars/{webinar_id}/registrants',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'registrants'
                     },
                     'webinar_polls': {
+                        'parent': 'list_webinars',
                         'path': 'webinars/{webinar_id}/polls',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'polls'
                     },
                     'webinar_questions': {
+                        'parent': 'list_webinars',
                         'paginate': False,
                         'path': 'webinars/{webinar_id}/registrants/questions',
                         'pk': ['webinar_id'],
@@ -135,18 +152,21 @@ ENDPOINTS_CONFIG = {
                         'ignore_zoom_error_codes': [3000]
                     },
                     'webinar_tracking_sources': {
+                        'parent': 'list_webinars',
                         'path': 'webinars/{webinar_id}/tracking_sources',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',
                         'data_key': 'tracking_sources'
                     },
                     'report_webinars': {
+                        'parent': 'list_webinars',
                         'paginate': False,
                         'path': 'report/webinars/{webinar_id}',
                         'pk': ['uuid'],
                         'forced-replication-method': 'FULL_TABLE',
                     },
                     'report_webinar_participants': {
+                        'parent': 'list_webinars',
                         'path': 'report/webinars/{webinar_id}/participants',
                         'pk': ['webinar_id', 'id'],
                         'forced-replication-method': 'FULL_TABLE',

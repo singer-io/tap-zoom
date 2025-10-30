@@ -14,7 +14,7 @@ def get_field_value(stream_name, field_name, endpoints=None):
 
     for endpoint_stream_name, endpoint in endpoints.items():
         if stream_name == endpoint_stream_name:
-            return endpoint[field_name]
+            return endpoint.get(field_name)
 
         if 'children' in endpoint:
             pk = get_field_value(stream_name, field_name, endpoints=endpoint['children'])
@@ -48,6 +48,12 @@ def get_schemas():
         mdata = {"table-key-properties": pk,
                 "forced-replication-method": repl_method,
                 "inclusion": "available"}
+
+        # Check if the stream has any parent attribute
+        parent_attribute = get_field_value(stream_name, 'parent')
+        if parent_attribute:
+            mdata["parent-tap-stream-id"] = parent_attribute
+
         metadata = [{"breadcrumb": [], "metadata": mdata}]
         for prop, json_schema in schema['properties'].items():
             if prop in pk:
