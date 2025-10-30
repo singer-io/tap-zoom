@@ -15,6 +15,8 @@ class ZoomBase(BaseCase):
     Shared tap-specific methods (as needed).
     """
     PAGE_SIZE = 100000
+    PARENT_TAP_STREAM_ID = "parent-tap-stream-id"
+    EXPECTED_PARENT_STREAM = "expected-parent-stream"
 
     @staticmethod
     def tap_name():
@@ -59,93 +61,128 @@ class ZoomBase(BaseCase):
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'meeting_polls': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'meeting_poll_results': {
                 self.PRIMARY_KEYS: {"meeting_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "meetings"
             },
             'meeting_registrants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'meeting_questions': {
                 self.PRIMARY_KEYS: {"meeting_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'report_meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'report_meeting_participants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_meetings"
             },
             'webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+            self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'webinar_absentees': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "webinars"
             },
             'webinar_poll_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "webinars"
             },
             'webinar_qna_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "webinars"
             },
             'webinar_panelists': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'webinar_registrants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'webinar_polls': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'webinar_questions': {
                 self.PRIMARY_KEYS: {"webinar_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'webinar_tracking_sources': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'report_webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
             'report_webinar_participants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
+                self.EXPECTED_PARENT_STREAM: "list_webinars"
             },
         }
+    
+    def expected_parent_tap_stream_id(self):
+        """
+        Test that expected_metadata contains correct parent-tap-stream-id values.
+        """
+        expected_metadata = self.expected_metadata()
+
+        for stream_name, expected in expected_metadata.items():
+            if self.EXPECTED_PARENT_STREAM in expected:
+                actual_parent = expected.get(self.PARENT_TAP_STREAM_ID)
+                expected_parent = expected.get(self.EXPECTED_PARENT_STREAM)
+                self.assertEqual(
+                    actual_parent,
+                    expected_parent,
+                    msg=f"Stream {stream_name} has parent-tap-stream-id {actual_parent}, "
+                        f"expected {expected_parent}."
+                )
 
     @classmethod
     def setUpClass(cls):
