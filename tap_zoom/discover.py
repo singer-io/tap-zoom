@@ -49,7 +49,6 @@ def get_schemas():
                 "forced-replication-method": repl_method,
                 "inclusion": "available"}
 
-        # Check if the stream has any parent attribute
         parent_attribute = get_field_value(stream_name, 'parent')
         if parent_attribute:
             mdata["parent-tap-stream-id"] = parent_attribute
