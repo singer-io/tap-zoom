@@ -56,6 +56,18 @@ class ZoomBase(BaseCase):
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
             },
+            'list_meetings': {
+                self.PRIMARY_KEYS: {"user_id", "id"},
+                self.REPLICATION_METHOD: self.FULL_TABLE,
+                self.RESPECTS_START_DATE: False,
+                self.PARENT_TAP_STREAM_ID: "users"
+            },
+            'list_webinars': {
+                self.PRIMARY_KEYS: {"user_id", "id"},
+                self.REPLICATION_METHOD: self.FULL_TABLE,
+                self.RESPECTS_START_DATE: False,
+                self.PARENT_TAP_STREAM_ID: "users"
+            },
             'meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
