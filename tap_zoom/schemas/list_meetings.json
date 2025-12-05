@@ -4,6 +4,7 @@
     "properties": {
         "user_id": {
             "type": [
+                "null",
                 "string"
             ]
         },
