@@ -11,8 +11,10 @@ ENDPOINTS_CONFIG = {
         'children': {
             'list_meetings': {
                 'parent': 'users',
-                'persist': False,
+                'persist': True,
                 'path': 'users/{user_id}/meetings',
+                'pk': ['user_id', 'id'],
+                'forced-replication-method': 'FULL_TABLE',
                 'data_key': 'meetings',
                 'provides': {
                     'meeting_id': 'id'
@@ -78,8 +80,10 @@ ENDPOINTS_CONFIG = {
             },
             'list_webinars': {
                 'parent': 'users',
-                'persist': False,
+                'persist': True,
                 'path': 'users/{user_id}/webinars',
+                'pk': ['user_id', 'id'],
+                'forced-replication-method': 'FULL_TABLE',
                 'data_key': 'webinars',
                 'ignore_zoom_error_codes': [200],
                 'provides': {
