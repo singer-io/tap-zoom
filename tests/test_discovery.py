@@ -1,4 +1,5 @@
 from tap_tester.base_suite_tests.discovery_test import DiscoveryTest
+from tap_tester import menagerie
 from base import ZoomBase
 
 
@@ -22,23 +23,27 @@ class ZoomDiscoveryTest(DiscoveryTest, ZoomBase):
         """
     
         # Get all discovered stream names
-        discovered_stream = {catalog['tap_stream_id'] for catalog in self.found_catalogs}
+        discovered_streams = {catalog['tap_stream_id'] for catalog in self.found_catalogs}
         
         parent_streams = {}
         
         for catalog in self.found_catalogs:
             stream_name = catalog['tap_stream_id']
+
+            schema_and_metadata = menagerie.get_annotated_schema(self.conn_id, catalog['stream_id'])
+            metadata = schema_and_metadata["metadata"]
+            stream_properties = [item for item in metadata if item.get("breadcrumb") == []]
             
-            for metadata_entry in catalog.get('metadata', []):
-                if metadata_entry.get('breadcrumb') == []:
-                    parent_id = metadata_entry.get('metadata', {}).get('parent-tap-stream-id')
-                    if parent_id:
-                        parent_streams[stream_name] = parent_id
+            if stream_properties:
+                stream_metadata = stream_properties[0].get("metadata", {})
+                parent_id = stream_metadata.get('parent-tap-stream-id')
+                if parent_id:
+                    parent_streams[stream_name] = parent_id
         
         # Validate all referenced parents exist
         missing_parents = {}
         for child_stream, parent_stream in parent_streams.items():
-            if parent_stream not in discovered_stream:
+            if parent_stream not in discovered_streams:
                 if parent_stream not in missing_parents:
                     missing_parents[parent_stream] = []
                 missing_parents[parent_stream].append(child_stream)
