@@ -13,7 +13,7 @@ class ZoomDiscoveryTest(DiscoveryTest, ZoomBase):
         # return set(self.expected_metadata().keys())
         return self.expected_stream_names()
     
-    def check_all_parent_streams_exist_in_catalog(self):
+    def test_all_parent_streams_exist_in_catalog(self):
         """
         Test that all parent-tap-stream-id references point to streams 
         that actually exist in the discovered catalog.
