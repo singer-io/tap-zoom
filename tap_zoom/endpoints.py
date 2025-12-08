@@ -11,7 +11,7 @@ ENDPOINTS_CONFIG = {
         'children': {
             'list_meetings': {
                 'parent': 'users',
-                'persist': True,
+                'persist': False,
                 'path': 'users/{user_id}/meetings',
                 'pk': ['user_id', 'id'],
                 'forced-replication-method': 'FULL_TABLE',
@@ -80,7 +80,7 @@ ENDPOINTS_CONFIG = {
             },
             'list_webinars': {
                 'parent': 'users',
-                'persist': True,
+                'persist': False,
                 'path': 'users/{user_id}/webinars',
                 'pk': ['user_id', 'id'],
                 'forced-replication-method': 'FULL_TABLE',
