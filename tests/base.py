@@ -15,7 +15,6 @@ class ZoomBase(BaseCase):
     Shared tap-specific methods (as needed).
     """
     PAGE_SIZE = 100000
-    PARENT_TAP_STREAM_ID = "parent-tap-stream-id"
 
     @staticmethod
     def tap_name():
@@ -60,109 +59,91 @@ class ZoomBase(BaseCase):
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'meeting_polls': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'meeting_poll_results': {
                 self.PRIMARY_KEYS: {"meeting_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "meetings"
             },
             'meeting_registrants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'meeting_questions': {
                 self.PRIMARY_KEYS: {"meeting_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'report_meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'report_meeting_participants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
             },
             'webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'webinar_absentees': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "webinars"
             },
             'webinar_poll_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "webinars"
             },
             'webinar_qna_results': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "email"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "webinars"
             },
             'webinar_panelists': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'webinar_registrants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'webinar_polls': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'webinar_questions': {
                 self.PRIMARY_KEYS: {"webinar_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'webinar_tracking_sources': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'report_webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
             'report_webinar_participants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
             },
         }
 

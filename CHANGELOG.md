@@ -1,8 +1,5 @@
 # Changelog
 
-## 2.1.0
-  * Adds parent-tap-stream-id field to catalog for child streams [#40](https://github.com/singer-io/tap-zoom/pull/40)
-
 ## 2.0.3
   * Update dependency versions for twistlock compliance
   * Adjust tests to pass in circle
