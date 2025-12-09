@@ -60,13 +60,13 @@ class ZoomBase(BaseCase):
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'meeting_polls': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'meeting_poll_results': {
                 self.PRIMARY_KEYS: {"meeting_uuid", "email"},
@@ -78,31 +78,31 @@ class ZoomBase(BaseCase):
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'meeting_questions': {
                 self.PRIMARY_KEYS: {"meeting_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'report_meetings': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'report_meeting_participants': {
                 self.PRIMARY_KEYS: {"meeting_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_meetings"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinar_absentees': {
                 self.PRIMARY_KEYS: {"webinar_uuid", "id"},
@@ -126,43 +126,43 @@ class ZoomBase(BaseCase):
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinar_registrants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinar_polls': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinar_questions': {
                 self.PRIMARY_KEYS: {"webinar_id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'webinar_tracking_sources': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'report_webinars': {
                 self.PRIMARY_KEYS: {"uuid"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
             'report_webinar_participants': {
                 self.PRIMARY_KEYS: {"webinar_id", "id"},
                 self.REPLICATION_METHOD: self.FULL_TABLE,
                 self.RESPECTS_START_DATE: False,
-                self.PARENT_TAP_STREAM_ID: "list_webinars"
+                self.PARENT_TAP_STREAM_ID: "users"
             },
         }
 
