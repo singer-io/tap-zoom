@@ -1,5 +1,9 @@
 # Changelog
 
+# 2.1.1
+  * Bump requests to 2.33.0 for security updates [#44](https://github.com/singer-io/tap-zoom/pull/44)
+
+
 ## 2.1.0
   * Adds parent-tap-stream-id field to catalog for child streams [#40](https://github.com/singer-io/tap-zoom/pull/40)
 
