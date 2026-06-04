@@ -3,14 +3,14 @@
 from setuptools import setup
 
 setup(name='tap-zoom',
-      version='2.1.0',
+      version='2.1.1',
       description='Singer.io tap for extracting data from the Zoom API',
       classifiers=['Programming Language :: Python :: 3 :: Only'],
       py_modules=['tap_zoom'],
       install_requires=[
         'backoff==1.10.0',
         'ratelimit==2.2.1',
-        'requests==2.32.4',
+        'requests==2.33.0',
         'singer-python==5.13.2'
       ],
       entry_points='''
